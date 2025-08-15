@@ -30,7 +30,6 @@ body {
 
 .main-content {
   flex: 1;
-  padding-top: 80px;
   width: 100%;
   min-height: calc(100vh - 80px);
   position: relative;
