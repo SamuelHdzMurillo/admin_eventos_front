@@ -124,8 +124,11 @@ const Login: React.FC = () => {
           <div className="login-footer">
             <Text type="secondary">
               ¿No tienes una cuenta?{" "}
-              <a href="#" onClick={() => message.info("Función en desarrollo")}>
-                Regístrate aquí
+              <a
+                href="/contacto"
+                onClick={() => message.info("Función en desarrollo")}
+              >
+                Contactate con nosotros
               </a>
             </Text>
           </div>
