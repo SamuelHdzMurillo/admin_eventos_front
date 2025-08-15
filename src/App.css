@@ -1,0 +1,470 @@
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  position: relative;
+}
+
+.page {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+/* Page Headers */
+.page-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.page-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Hero Section */
+.hero {
+  min-height: 80vh;
+  background-color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  width: 100%;
+  position: relative;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cta-button {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Features Section */
+.features {
+  padding: 5rem 0;
+  background-color: white;
+  width: 100%;
+  position: relative;
+}
+
+.features h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.feature-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Content Sections */
+.programa-content,
+.hospedaje-content,
+.restaurantes-content,
+.lugares-content,
+.director-content,
+.contacto-content {
+  padding: 4rem 0;
+  background-color: white;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+.programa-content h2,
+.hospedaje-content h2,
+.restaurantes-content h2,
+.lugares-content h2,
+.director-content h2,
+.contacto-content h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+/* Grid Layouts */
+.programa-grid,
+.hospedaje-grid,
+.restaurantes-grid,
+.lugares-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Cards */
+.programa-card,
+.hospedaje-card,
+.restaurante-card,
+.lugar-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.programa-card:hover,
+.hospedaje-card:hover,
+.restaurante-card:hover,
+.lugar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.programa-card h3,
+.hospedaje-card h3,
+.restaurante-card h3,
+.lugar-card h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.programa-card p,
+.hospedaje-card p,
+.restaurante-card p,
+.lugar-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.programa-card ul,
+.hospedaje-card ul,
+.restaurante-card ul,
+.lugar-card ul {
+  color: #666;
+  margin-left: 1.5rem;
+}
+
+.programa-card li,
+.hospedaje-card li,
+.restaurante-card li,
+.lugar-card li {
+  margin-bottom: 0.5rem;
+}
+
+/* Director Section */
+.director-profile {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.director-info h2 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.director-title {
+  color: #3498db;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.director-bio h3 {
+  color: #2c3e50;
+  margin: 2rem 0 1rem 0;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.director-bio p {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.director-bio ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.director-bio li {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Contacto Section */
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  width: 100%;
+}
+
+.contacto-info h3 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.contacto-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contacto-item h4 {
+  color: #3498db;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.contacto-item p {
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.contacto-form-container h3 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.contacto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group label {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.8rem;
+  border: 2px solid #e9ecef;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+.footer {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: auto;
+  width: 100%;
+  position: relative;
+}
+
+.footer p {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .contacto-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .programa-grid,
+  .hospedaje-grid,
+  .restaurantes-grid,
+  .lugares-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .cta-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-header {
+    padding: 3rem 0;
+  }
+}
