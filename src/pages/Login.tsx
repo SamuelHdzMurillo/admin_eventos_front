@@ -21,7 +21,7 @@ const Login: React.FC = () => {
 
       if (response.success) {
         message.success("Inicio de sesión exitoso!");
-        navigate("/");
+        navigate("/dashboard");
       } else {
         setError(response.message || "Error en el inicio de sesión");
       }

@@ -14,15 +14,17 @@ import QueVisitar from "./pages/QueVisitar";
 import Director from "./pages/Director";
 import Contacto from "./pages/Contacto";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import "./App.css";
 
 function AppContent() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const isDashboardPage = location.pathname === "/dashboard";
 
   return (
     <div className="App">
-      {!isLoginPage && <Navbar />}
+      {!isLoginPage && !isDashboardPage && <Navbar />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,10 +35,11 @@ function AppContent() {
           <Route path="/director" element={<Director />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
 
-      {!isLoginPage && (
+      {!isLoginPage && !isDashboardPage && (
         <footer className="footer">
           <div className="container">
             <p>
