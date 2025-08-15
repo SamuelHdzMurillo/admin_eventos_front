@@ -1,19 +1,35 @@
-import React from "react";
-import { Form, Input, Button, Card, Typography, message } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Button, Card, Typography, message, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/auth";
 import "./Login.css";
 
 const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onFinish = (values: any) => {
-    console.log("Login values:", values);
-    // Aquí puedes agregar la lógica de autenticación
-    message.success("Inicio de sesión exitoso!");
-    navigate("/");
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await authService.login(values.email, values.password);
+
+      if (response.success) {
+        message.success("Inicio de sesión exitoso!");
+        navigate("/");
+      } else {
+        setError(response.message || "Error en el inicio de sesión");
+      }
+    } catch (error) {
+      setError("Error en el inicio de sesión");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -31,6 +47,17 @@ const Login: React.FC = () => {
             </Title>
             <Text type="secondary">Ingresa tus credenciales para acceder</Text>
           </div>
+
+          {error && (
+            <Alert
+              message={error}
+              type="error"
+              showIcon
+              closable
+              onClose={() => setError(null)}
+              style={{ marginBottom: 16 }}
+            />
+          )}
 
           <Form
             name="login"
@@ -86,8 +113,10 @@ const Login: React.FC = () => {
                 htmlType="submit"
                 className="login-button"
                 block
+                loading={loading}
+                disabled={loading}
               >
-                Iniciar Sesión
+                {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
               </Button>
             </Form.Item>
           </Form>
