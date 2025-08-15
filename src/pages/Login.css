@@ -1,0 +1,113 @@
+.login-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card {
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  background: white;
+  backdrop-filter: blur(10px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 0 16px;
+}
+
+.login-title {
+  margin-bottom: 8px !important;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.login-input {
+  border-radius: 12px;
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+  height: 48px;
+  font-size: 16px;
+}
+
+.login-input:hover {
+  border-color: #1890ff;
+}
+
+.login-input:focus {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.1);
+}
+
+.login-button {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.3);
+  background: linear-gradient(135deg, #40a9ff 0%, #9254de 100%);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.login-footer a {
+  color: #1890ff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-footer a:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+    height: 100vh;
+  }
+
+  .login-content {
+    max-width: 100%;
+  }
+
+  .login-card {
+    border-radius: 12px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+}

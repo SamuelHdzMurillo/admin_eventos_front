@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -63,7 +64,7 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="navbar-auth">
-          <button className="login-btn">
+          <button className="login-btn" onClick={() => navigate("/login")}>
             <svg
               width="20"
               height="20"
