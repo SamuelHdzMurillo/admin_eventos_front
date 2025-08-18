@@ -20,6 +20,16 @@ const Login: React.FC = () => {
       const response = await authService.login(values.email, values.password);
 
       if (response.success) {
+        // Fallback: si no se guardó aún, intenta guardarlo desde la respuesta
+        const existing = authService.getToken();
+        const possible = (response as any)?.token as string | undefined;
+        if (!existing && possible) {
+          const bearer = possible.startsWith("Bearer ")
+            ? possible
+            : `Bearer ${possible}`;
+          localStorage.setItem("auth_token", bearer);
+        }
+
         message.success("Inicio de sesión exitoso!");
         navigate("/dashboard");
       } else {

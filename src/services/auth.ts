@@ -1,5 +1,26 @@
 import { config } from "../config/env";
 
+function extractTokenFromResponse(
+  data: any,
+  response: Response
+): string | null {
+  const headerAuth =
+    response.headers.get("Authorization") ||
+    response.headers.get("authorization");
+  const candidates = [
+    data?.token,
+    data?.access_token,
+    data?.authorization,
+    data?.bearer,
+    data?.jwt,
+    data?.data?.token,
+    data?.data?.access_token,
+    headerAuth,
+  ].filter(Boolean);
+  const first = candidates[0] as unknown;
+  return typeof first === "string" ? (first as string) : null;
+}
+
 interface LoginResponse {
   success: boolean;
   message?: string;
@@ -21,9 +42,13 @@ export const authService = {
       const data = await response.json();
 
       if (response.ok) {
-        // Guardar token en localStorage
-        if (data.token) {
-          localStorage.setItem("auth_token", data.token);
+        // Guardar token en localStorage con prefijo Bearer
+        const rawToken = extractTokenFromResponse(data, response);
+        if (rawToken) {
+          const bearerToken = rawToken.startsWith("Bearer ")
+            ? rawToken
+            : `Bearer ${rawToken}`;
+          localStorage.setItem("auth_token", bearerToken);
         }
         return { success: true, ...data };
       } else {
@@ -57,6 +82,11 @@ export const authService = {
 
   getToken() {
     return localStorage.getItem("auth_token");
+  },
+
+  getAuthHeader() {
+    const token = authService.getToken();
+    return token ? { Authorization: token } : {};
   },
 
   isAuthenticated() {
