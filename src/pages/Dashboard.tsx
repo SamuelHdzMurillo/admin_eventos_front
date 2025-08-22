@@ -741,11 +741,7 @@ const Dashboard: React.FC = () => {
             </Title>
           </div>
 
-          <div className="header-actions">
-            <Button type="primary" size="large">
-              Crear Nuevo Evento
-            </Button>
-          </div>
+          <div className="header-actions"></div>
         </Layout.Header>
 
         {/* Contenido principal */}
