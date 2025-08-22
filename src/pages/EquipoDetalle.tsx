@@ -1,0 +1,436 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Card,
+  Space,
+  Tag,
+  Avatar,
+  Typography,
+  Button,
+  Descriptions,
+  Spin,
+  message,
+  Empty,
+  Row,
+  Col,
+  Table,
+  Divider,
+  Breadcrumb,
+  Statistic,
+} from "antd";
+import {
+  TeamOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  EnvironmentOutlined,
+  CalendarOutlined,
+  BookOutlined,
+  FileTextOutlined,
+  TrophyOutlined,
+  SafetyCertificateOutlined,
+  ArrowLeftOutlined,
+  HomeOutlined,
+  UsergroupAddOutlined,
+  CiOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
+import { eventosService } from "../services/eventos";
+import type {
+  Equipo,
+  Participante,
+  Acompanante,
+  Receta,
+  CedulaRegistro,
+} from "../services/eventos";
+import dayjs from "dayjs";
+import "./EquipoDetalle.css";
+
+const { Text, Title, Paragraph } = Typography;
+
+const EquipoDetalle: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [equipo, setEquipo] = useState<Equipo | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      loadEquipoDetail(parseInt(id));
+    }
+  }, [id]);
+
+  const loadEquipoDetail = async (equipoId: number) => {
+    try {
+      setLoading(true);
+      console.log("Cargando equipo con ID:", equipoId);
+      const response = await eventosService.getEquipoDetail(equipoId);
+      console.log("Respuesta del servidor:", response);
+      setEquipo(response.data);
+    } catch (error: any) {
+      console.error("Error loading equipo:", error);
+      message.error(
+        error?.message || "No se pudo cargar la información del equipo"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDateTime = (iso?: string) =>
+    iso ? dayjs(iso).format("DD/MM/YYYY HH:mm") : "-";
+
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "activo":
+        return "success";
+      case "inactivo":
+        return "default";
+      case "pendiente":
+        return "warning";
+      case "cancelado":
+        return "error";
+      default:
+        return "default";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="equipo-detalle-loading">
+        <Spin size="large" />
+        <Text>Cargando información del equipo...</Text>
+      </div>
+    );
+  }
+
+  if (!equipo) {
+    return (
+      <div className="equipo-detalle-error">
+        <Empty description="No se encontró la información del equipo" />
+        <Button type="primary" onClick={() => navigate("/dashboard")}>
+          Volver al Dashboard
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="equipo-detalle-container">
+      {/* Breadcrumb */}
+      <Breadcrumb className="equipo-detalle-breadcrumb">
+        <Breadcrumb.Item>
+          <Button
+            type="link"
+            icon={<HomeOutlined />}
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </Button>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Button
+            type="link"
+            icon={<TeamOutlined />}
+            onClick={() => navigate("/dashboard?tab=equipos")}
+          >
+            Equipos
+          </Button>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>{equipo.nombre_equipo}</Breadcrumb.Item>
+      </Breadcrumb>
+
+      {/* Header con información principal */}
+      <Card className="equipo-detalle-header">
+        <Row gutter={24} align="middle">
+          <Col xs={24} md={16}>
+            <Space direction="vertical" size="small">
+              <Title level={2} className="equipo-nombre">
+                <TeamOutlined /> {equipo.nombre_equipo}
+              </Title>
+              <Space size="large">
+                <Space>
+                  <EnvironmentOutlined />
+                  <Text strong>{equipo.entidad_federativa}</Text>
+                </Space>
+                <Tag color={getStatusColor(equipo.estatus_del_equipo)}>
+                  {equipo.estatus_del_equipo?.charAt(0).toUpperCase() +
+                    equipo.estatus_del_equipo?.slice(1)}
+                </Tag>
+              </Space>
+            </Space>
+          </Col>
+          <Col xs={24} md={8}>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
+              <Button
+                type="primary"
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate("/dashboard?tab=equipos")}
+                block
+              >
+                Volver a Equipos
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      </Card>
+
+      {/* Información básica del equipo */}
+      <Card title="Información del Equipo" className="equipo-info-card">
+        <Descriptions bordered column={2} size="middle">
+          <Descriptions.Item label="Nombre del Equipo" span={2}>
+            <Text strong style={{ fontSize: "16px" }}>
+              {equipo.nombre_equipo}
+            </Text>
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Entidad Federativa">
+            <Space>
+              <EnvironmentOutlined />
+              <Text>{equipo.entidad_federativa}</Text>
+            </Space>
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Estatus">
+            <Tag color={getStatusColor(equipo.estatus_del_equipo)}>
+              {equipo.estatus_del_equipo?.charAt(0).toUpperCase() +
+                equipo.estatus_del_equipo?.slice(1)}
+            </Tag>
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Anfitrión">
+            <Space>
+              <UserOutlined />
+              <Text strong>{equipo.nombre_anfitrion}</Text>
+            </Space>
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Teléfono">
+            <Space>
+              <PhoneOutlined />
+              <Text>{equipo.telefono_anfitrion}</Text>
+            </Space>
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Correo" span={2}>
+            <Space>
+              <MailOutlined />
+              <a href={`mailto:${equipo.correo_anfitrion}`}>
+                {equipo.correo_anfitrion}
+              </a>
+            </Space>
+          </Descriptions.Item>
+        </Descriptions>
+      </Card>
+
+      {/* Información del evento */}
+      {equipo.evento && (
+        <Card title="Información del Evento" className="equipo-info-card">
+          <Descriptions bordered column={2} size="middle">
+            <Descriptions.Item label="Nombre del Evento" span={2}>
+              <Text strong style={{ fontSize: "16px" }}>
+                {equipo.evento.nombre_evento}
+              </Text>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Sede">
+              <Text>{equipo.evento.sede_evento}</Text>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Límite de Participantes">
+              <Text strong>{equipo.evento.lim_de_participantes_evento}</Text>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Fecha de Inicio">
+              <Text>{formatDateTime(equipo.evento.inicio_evento)}</Text>
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Fecha de Fin">
+              <Text>{formatDateTime(equipo.evento.fin_evento)}</Text>
+            </Descriptions.Item>
+          </Descriptions>
+        </Card>
+      )}
+
+      {/* Participantes */}
+      {equipo.participantes && equipo.participantes.length > 0 && (
+        <Card
+          title={`Participantes (${equipo.participantes.length})`}
+          className="equipo-info-card"
+        >
+          <Table
+            dataSource={equipo.participantes}
+            rowKey="id"
+            size="middle"
+            pagination={false}
+            columns={[
+              {
+                title: "Nombre",
+                dataIndex: "nombre_participante",
+                key: "nombre_participante",
+                render: (text: string) => <Text strong>{text}</Text>,
+              },
+              {
+                title: "Rol",
+                dataIndex: "rol_participante",
+                key: "rol_participante",
+              },
+              {
+                title: "Especialidad",
+                dataIndex: "especialidad_participante",
+                key: "especialidad_participante",
+              },
+              {
+                title: "Semestre",
+                dataIndex: "semestre_participante",
+                key: "semestre_participante",
+              },
+              {
+                title: "Plantel",
+                dataIndex: "plantel_participante",
+                key: "plantel_participante",
+              },
+              {
+                title: "Tipo Sangre",
+                dataIndex: "tipo_sangre_participante",
+                key: "tipo_sangre_participante",
+              },
+              {
+                title: "Alérgico",
+                dataIndex: "alergico",
+                key: "alergico",
+                render: (value: boolean) => (
+                  <Tag color={value ? "error" : "success"}>
+                    {value ? "Sí" : "No"}
+                  </Tag>
+                ),
+              },
+            ]}
+          />
+        </Card>
+      )}
+
+      {/* Acompañantes */}
+      {equipo.acompanantes && equipo.acompanantes.length > 0 && (
+        <Card
+          title={`Acompañantes (${equipo.acompanantes.length})`}
+          className="equipo-info-card"
+        >
+          <Table
+            dataSource={equipo.acompanantes}
+            rowKey="id"
+            size="middle"
+            pagination={false}
+            columns={[
+              {
+                title: "Nombre",
+                dataIndex: "nombre_acompanante",
+                key: "nombre_acompanante",
+                render: (text: string) => <Text strong>{text}</Text>,
+              },
+              {
+                title: "Rol",
+                dataIndex: "rol",
+                key: "rol",
+              },
+              {
+                title: "Puesto",
+                dataIndex: "puesto",
+                key: "puesto",
+              },
+              {
+                title: "Teléfono",
+                dataIndex: "telefono",
+                key: "telefono",
+              },
+              {
+                title: "Email",
+                dataIndex: "email",
+                key: "email",
+                render: (text: string) => <a href={`mailto:${text}`}>{text}</a>,
+              },
+            ]}
+          />
+        </Card>
+      )}
+
+      {/* Recetas */}
+      {equipo.recetas && equipo.recetas.length > 0 && (
+        <Card
+          title={`Recetas (${equipo.recetas.length})`}
+          className="equipo-info-card"
+        >
+          {equipo.recetas.map((receta, index) => (
+            <Card
+              key={receta.id}
+              type="inner"
+              title={`${receta.tipo_receta} - ${receta.descripcion}`}
+              style={{ marginBottom: 16 }}
+              extra={
+                <Text type="secondary">Creado por: {receta.creado_por}</Text>
+              }
+            >
+              <Descriptions column={1} size="small">
+                <Descriptions.Item label="Ingredientes">
+                  <Text>{receta.ingredientes}</Text>
+                </Descriptions.Item>
+                <Descriptions.Item label="Preparación">
+                  <Text style={{ whiteSpace: "pre-line" }}>
+                    {receta.preparacion}
+                  </Text>
+                </Descriptions.Item>
+                {receta.observaciones && (
+                  <Descriptions.Item label="Observaciones">
+                    <Text>{receta.observaciones}</Text>
+                  </Descriptions.Item>
+                )}
+              </Descriptions>
+            </Card>
+          ))}
+        </Card>
+      )}
+
+      {/* Cédulas de Registro */}
+      {equipo.cedulas_registro && equipo.cedulas_registro.length > 0 && (
+        <Card
+          title={`Cédulas de Registro (${equipo.cedulas_registro.length})`}
+          className="equipo-info-card"
+        >
+          {equipo.cedulas_registro.map((cedula, index) => (
+            <Card
+              key={cedula.id}
+              type="inner"
+              title={`Cédula #${cedula.id}`}
+              style={{ marginBottom: 16 }}
+              extra={
+                <Tag
+                  color={cedula.estado === "aprobada" ? "success" : "warning"}
+                >
+                  {cedula.estado}
+                </Tag>
+              }
+            >
+              <div>
+                <Text strong>Participantes:</Text>
+                <ul style={{ margin: "8px 0", paddingLeft: "20px" }}>
+                  {cedula.participantes.map((participante, idx) => (
+                    <li key={idx}>{participante}</li>
+                  ))}
+                </ul>
+                <Divider />
+                <Text strong>Asesores:</Text>
+                <ul style={{ margin: "8px 0", paddingLeft: "20px" }}>
+                  {cedula.asesores.map((asesor, idx) => (
+                    <li key={idx}>{asesor}</li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          ))}
+        </Card>
+      )}
+    </div>
+  );
+};
+
+export default EquipoDetalle;

@@ -1,0 +1,280 @@
+.equipo-detalle-container {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.equipo-detalle-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+}
+
+.equipo-detalle-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+}
+
+.equipo-detalle-breadcrumb {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.equipo-detalle-header {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.equipo-detalle-header .ant-card-body {
+  padding: 32px;
+}
+
+.equipo-nombre {
+  color: white !important;
+  margin: 0 !important;
+}
+
+.equipo-nombre .anticon {
+  margin-right: 12px;
+  font-size: 32px;
+}
+
+.equipo-stats {
+  margin-bottom: 24px;
+}
+
+.equipo-stats .ant-card {
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.equipo-stats .ant-card:hover {
+  transform: translateY(-2px);
+}
+
+.equipo-stats .ant-statistic-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.equipo-stats .ant-statistic-content {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.equipo-content {
+  margin-bottom: 24px;
+}
+
+.equipo-info-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.equipo-info-card .ant-card-head {
+  background: #f8f9fa;
+  border-bottom: 2px solid #e8e8e8;
+  border-radius: 8px 8px 0 0;
+}
+
+.equipo-info-card .ant-card-head-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.equipo-info-card .ant-card-head-title .anticon {
+  margin-right: 8px;
+  color: #1890ff;
+}
+
+.equipo-info-card .ant-descriptions-item-label {
+  font-weight: 600;
+  color: #333;
+  background: #fafafa;
+}
+
+.equipo-info-card .ant-descriptions-item-content {
+  color: #666;
+}
+
+.equipo-info-card .ant-table {
+  border-radius: 0 0 8px 8px;
+}
+
+.equipo-info-card .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.equipo-info-card .ant-table-tbody > tr:hover > td {
+  background: #f5f5f5;
+}
+
+.equipo-info-card .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.equipo-info-card .ant-card-inner {
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.equipo-info-card .ant-card-inner:last-child {
+  margin-bottom: 0;
+}
+
+.equipo-info-card .ant-card-inner .ant-card-head {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.equipo-info-card .ant-card-inner .ant-card-head-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.equipo-info-card .ant-tag {
+  font-weight: 500;
+}
+
+.equipo-info-card .ant-space-item {
+  display: flex;
+  align-items: center;
+}
+
+.equipo-info-card .anticon {
+  color: #1890ff;
+}
+
+.equipo-info-card a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.equipo-info-card a:hover {
+  text-decoration: underline;
+}
+
+.equipo-info-card ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.equipo-info-card li {
+  margin-bottom: 4px;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .equipo-detalle-container {
+    padding: 16px;
+  }
+
+  .equipo-detalle-header .ant-card-body {
+    padding: 20px;
+  }
+
+  .equipo-nombre {
+    font-size: 20px !important;
+  }
+
+  .equipo-nombre .anticon {
+    font-size: 24px;
+  }
+
+  .equipo-stats .ant-statistic-content {
+    font-size: 20px;
+  }
+
+  .equipo-info-card .ant-descriptions {
+    font-size: 12px;
+  }
+
+  .equipo-info-card .ant-table {
+    font-size: 12px;
+  }
+
+  .equipo-info-card .ant-table-thead > tr > th,
+  .equipo-info-card .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 576px) {
+  .equipo-detalle-container {
+    padding: 12px;
+  }
+
+  .equipo-detalle-header .ant-card-body {
+    padding: 16px;
+  }
+
+  .equipo-nombre {
+    font-size: 18px !important;
+  }
+
+  .equipo-stats .ant-statistic-title {
+    font-size: 12px;
+  }
+
+  .equipo-stats .ant-statistic-content {
+    font-size: 18px;
+  }
+}
+
+/* Animations */
+.equipo-info-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar */
+.equipo-detalle-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.equipo-detalle-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.equipo-detalle-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.equipo-detalle-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

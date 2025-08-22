@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Card,
   Row,
@@ -51,6 +52,7 @@ import "./Dashboard.css";
 import { eventosService } from "../services/eventos";
 import type { Evento, Equipo } from "../services/eventos";
 import dayjs from "dayjs";
+import EquiposTable from "../components/EquiposTable";
 
 const EventSelector: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
@@ -419,9 +421,19 @@ const EventSelector: React.FC = () => {
 const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false);
+
+  // Verificar si hay un parámetro de pestaña en la URL
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      setSelectedKey(tab);
+    }
+  }, [searchParams]);
   // Datos de estadísticas
   const stats = [
     {
@@ -621,6 +633,11 @@ const Dashboard: React.FC = () => {
       label: "Eventos",
     },
     {
+      key: "equipos",
+      icon: <TeamOutlined />,
+      label: "Equipos",
+    },
+    {
       key: "participants",
       icon: <TeamOutlined />,
       label: "Participantes",
@@ -640,6 +657,12 @@ const Dashboard: React.FC = () => {
   const handleMenuClick = (e: any) => {
     setSelectedKey(e.key);
     setMobileDrawerVisible(false);
+    // Actualizar la URL con el parámetro de pestaña
+    if (e.key === "dashboard") {
+      navigate("/dashboard");
+    } else {
+      navigate(`/dashboard?tab=${e.key}`);
+    }
   };
 
   const toggleSidebar = () => {
@@ -711,6 +734,7 @@ const Dashboard: React.FC = () => {
             <Title level={3} className="page-title">
               {selectedKey === "dashboard" && "Dashboard"}
               {selectedKey === "events" && "Gestión de Eventos"}
+              {selectedKey === "equipos" && "Gestión de Equipos"}
               {selectedKey === "participants" && "Participantes"}
               {selectedKey === "revenue" && "Reportes de Ingresos"}
               {selectedKey === "settings" && "Configuración"}
@@ -883,6 +907,12 @@ const Dashboard: React.FC = () => {
                   <EventSelector />
                 </Space>
               </Card>
+            </div>
+          )}
+
+          {selectedKey === "equipos" && (
+            <div className="dashboard-content-wrapper">
+              <EquiposTable />
             </div>
           )}
 

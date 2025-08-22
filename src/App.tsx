@@ -15,16 +15,18 @@ import Director from "./pages/Director";
 import Contacto from "./pages/Contacto";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import EquipoDetalle from "./pages/EquipoDetalle";
 import "./App.css";
 
 function AppContent() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isDashboardPage = location.pathname === "/dashboard";
+  const isEquipoDetallePage = location.pathname.startsWith("/equipo/");
 
   return (
     <div className="App">
-      {!isLoginPage && !isDashboardPage && <Navbar />}
+      {!isLoginPage && !isDashboardPage && !isEquipoDetallePage && <Navbar />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -36,10 +38,11 @@ function AppContent() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/equipo/:id" element={<EquipoDetalle />} />
         </Routes>
       </main>
 
-      {!isLoginPage && !isDashboardPage && (
+      {!isLoginPage && !isDashboardPage && !isEquipoDetallePage && (
         <footer className="footer">
           <div className="container">
             <p>
