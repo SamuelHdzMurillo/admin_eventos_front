@@ -187,4 +187,24 @@ export const eventosService = {
     }
     return data as ApiItemResponse<Equipo>;
   },
+
+  async updateEquipo(
+    equipoId: number,
+    equipoData: Partial<Equipo>
+  ): Promise<ApiItemResponse<Equipo>> {
+    const response = await fetch(`${config.API_URL}/equipos/${equipoId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(equipoData),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.message || "No se pudo actualizar el equipo");
+    }
+    return data as ApiItemResponse<Equipo>;
+  },
 };

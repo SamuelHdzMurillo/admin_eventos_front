@@ -17,6 +17,10 @@ import {
   Divider,
   Breadcrumb,
   Statistic,
+  Modal,
+  Form,
+  Input,
+  Select,
 } from "antd";
 import {
   TeamOutlined,
@@ -34,6 +38,7 @@ import {
   UsergroupAddOutlined,
   CiOutlined,
   InfoCircleOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { eventosService } from "../services/eventos";
 import type {
@@ -63,6 +68,9 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
   const navigate = useNavigate();
   const [equipo, setEquipo] = useState<Equipo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editForm] = Form.useForm();
+  const [updating, setUpdating] = useState(false);
 
   // Usar equipoId de props si está disponible, sino usar el parámetro de URL
   const finalEquipoId = equipoId || (id ? parseInt(id) : null);
@@ -105,6 +113,36 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
         return "error";
       default:
         return "default";
+    }
+  };
+
+  const handleEdit = () => {
+    if (equipo) {
+      editForm.setFieldsValue({
+        nombre_equipo: equipo.nombre_equipo,
+        entidad_federativa: equipo.entidad_federativa,
+        estatus_del_equipo: equipo.estatus_del_equipo,
+        nombre_anfitrion: equipo.nombre_anfitrion,
+        telefono_anfitrion: equipo.telefono_anfitrion,
+        correo_anfitrion: equipo.correo_anfitrion,
+      });
+      setEditModalVisible(true);
+    }
+  };
+
+  const handleUpdate = async (values: any) => {
+    if (!equipo) return;
+
+    setUpdating(true);
+    try {
+      const res = await eventosService.updateEquipo(equipo.id, values);
+      setEquipo(res.data);
+      setEditModalVisible(false);
+      message.success("Equipo actualizado exitosamente");
+    } catch (err: any) {
+      message.error(err?.message || "No se pudo actualizar el equipo");
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -191,6 +229,14 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
                 block
               >
                 Volver a Equipos
+              </Button>
+              <Button
+                type="default"
+                icon={<SettingOutlined />}
+                onClick={handleEdit}
+                block
+              >
+                Editar Equipo
               </Button>
             </Space>
           </Col>
@@ -451,6 +497,134 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
           ))}
         </Card>
       )}
+
+      {/* Modal de edición */}
+      <Modal
+        title="Editar Equipo"
+        open={editModalVisible}
+        onCancel={() => setEditModalVisible(false)}
+        footer={null}
+        width={600}
+      >
+        <Form form={editForm} layout="vertical" onFinish={handleUpdate}>
+          <Form.Item
+            name="nombre_equipo"
+            label="Nombre del Equipo"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa el nombre del equipo",
+              },
+              {
+                max: 255,
+                message: "El nombre no puede exceder 255 caracteres",
+              },
+            ]}
+          >
+            <Input placeholder="Nombre del equipo" />
+          </Form.Item>
+
+          <Form.Item
+            name="entidad_federativa"
+            label="Entidad Federativa"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa la entidad federativa",
+              },
+              {
+                max: 255,
+                message: "La entidad no puede exceder 255 caracteres",
+              },
+            ]}
+          >
+            <Input placeholder="Entidad federativa" />
+          </Form.Item>
+
+          <Form.Item
+            name="nombre_anfitrion"
+            label="Nombre del Anfitrión"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa el nombre del anfitrión",
+              },
+              {
+                max: 255,
+                message: "El nombre no puede exceder 255 caracteres",
+              },
+            ]}
+          >
+            <Input placeholder="Nombre del anfitrión" />
+          </Form.Item>
+
+          <Form.Item
+            name="telefono_anfitrion"
+            label="Teléfono del Anfitrión"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa el teléfono del anfitrión",
+              },
+              {
+                max: 20,
+                message: "El teléfono no puede exceder 20 caracteres",
+              },
+            ]}
+          >
+            <Input placeholder="Teléfono del anfitrión" />
+          </Form.Item>
+
+          <Form.Item
+            name="correo_anfitrion"
+            label="Correo del Anfitrión"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa el correo del anfitrión",
+              },
+              {
+                type: "email",
+                message: "Por favor ingresa un correo válido",
+              },
+              {
+                max: 255,
+                message: "El correo no puede exceder 255 caracteres",
+              },
+            ]}
+          >
+            <Input placeholder="Correo del anfitrión" />
+          </Form.Item>
+
+          <Form.Item
+            name="estatus_del_equipo"
+            label="Estatus del Equipo"
+            rules={[
+              {
+                required: true,
+                message: "Por favor selecciona el estatus",
+              },
+            ]}
+          >
+            <Select placeholder="Selecciona el estatus">
+              <Select.Option value="activo">Activo</Select.Option>
+              <Select.Option value="inactivo">Inactivo</Select.Option>
+              <Select.Option value="eliminado">Eliminado</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item style={{ marginTop: 24, textAlign: "right" }}>
+            <Space>
+              <Button onClick={() => setEditModalVisible(false)}>
+                Cancelar
+              </Button>
+              <Button type="primary" htmlType="submit" loading={updating}>
+                {updating ? "Actualizando..." : "Actualizar Equipo"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
