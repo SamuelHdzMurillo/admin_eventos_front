@@ -8,24 +8,24 @@
 }
 
 .equipos-table-card .ant-card-head {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: white;
+  color: #333;
   border-radius: 8px 8px 0 0;
 }
 
 .equipos-table-card .ant-card-head-title {
-  color: white;
+  color: #333;
 }
 
 .equipos-table-card .ant-card-extra .ant-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  background: #f0f0f0;
+  border: 1px solid #d9d9d9;
+  color: #333;
 }
 
 .equipos-table-card .ant-card-extra .ant-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: #e6e6e6;
+  border-color: #bfbfbf;
 }
 
 .equipos-table {
@@ -47,24 +47,24 @@
 }
 
 .equipo-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: white;
 }
 
 .equipo-detail-modal .ant-modal-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: white;
+  color: #333;
 }
 
 .equipo-detail-modal .ant-modal-title {
-  color: white;
+  color: #333;
 }
 
 .equipo-detail-modal .ant-modal-close {
-  color: white;
+  color: #333;
 }
 
 .equipo-detail-modal .ant-modal-close:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: #666;
 }
 
 .equipo-detail-modal .ant-descriptions-item-label {
@@ -137,19 +137,19 @@
 }
 
 .equipos-table .ant-pagination-item-active {
-  border-color: #667eea;
+  border-color: #1890ff;
 }
 
 .equipos-table .ant-pagination-item-active a {
-  color: #667eea;
+  color: #1890ff;
 }
 
 .equipos-table .ant-pagination-item:hover {
-  border-color: #667eea;
+  border-color: #1890ff;
 }
 
 .equipos-table .ant-pagination-item:hover a {
-  color: #667eea;
+  color: #1890ff;
 }
 
 /* Modal detail styling */
