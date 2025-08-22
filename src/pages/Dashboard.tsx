@@ -47,12 +47,14 @@ import {
   SettingOutlined,
   LogoutOutlined,
   MenuOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import "./Dashboard.css";
 import { eventosService } from "../services/eventos";
 import type { Evento, Equipo } from "../services/eventos";
 import dayjs from "dayjs";
 import EquiposTable from "../components/EquiposTable";
+import EquipoDetalle from "./EquipoDetalle";
 
 const EventSelector: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
@@ -426,6 +428,7 @@ const Dashboard: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false);
+  const [selectedEquipoId, setSelectedEquipoId] = useState<number | null>(null);
 
   // Verificar si hay un parámetro de pestaña en la URL
   useEffect(() => {
@@ -638,6 +641,12 @@ const Dashboard: React.FC = () => {
       label: "Equipos",
     },
     {
+      key: "equipo-detalle",
+      icon: <EyeOutlined />,
+      label: "Detalle de Equipo",
+      disabled: !selectedEquipoId,
+    },
+    {
       key: "participants",
       icon: <TeamOutlined />,
       label: "Participantes",
@@ -663,6 +672,12 @@ const Dashboard: React.FC = () => {
     } else {
       navigate(`/dashboard?tab=${e.key}`);
     }
+  };
+
+  const handleEquipoSelect = (equipoId: number) => {
+    setSelectedEquipoId(equipoId);
+    setSelectedKey("equipo-detalle");
+    navigate(`/dashboard?tab=equipo-detalle&equipo=${equipoId}`);
   };
 
   const toggleSidebar = () => {
@@ -735,6 +750,7 @@ const Dashboard: React.FC = () => {
               {selectedKey === "dashboard" && "Dashboard"}
               {selectedKey === "events" && "Gestión de Eventos"}
               {selectedKey === "equipos" && "Gestión de Equipos"}
+              {selectedKey === "equipo-detalle" && "Detalle de Equipo"}
               {selectedKey === "participants" && "Participantes"}
               {selectedKey === "revenue" && "Reportes de Ingresos"}
               {selectedKey === "settings" && "Configuración"}
@@ -908,7 +924,17 @@ const Dashboard: React.FC = () => {
 
           {selectedKey === "equipos" && (
             <div className="dashboard-content-wrapper">
-              <EquiposTable />
+              <EquiposTable onEquipoSelect={handleEquipoSelect} />
+            </div>
+          )}
+
+          {selectedKey === "equipo-detalle" && selectedEquipoId && (
+            <div className="dashboard-content-wrapper">
+              <EquipoDetalle
+                equipoId={selectedEquipoId}
+                isEmbedded={true}
+                onBackToEquipos={() => setSelectedKey("equipos")}
+              />
             </div>
           )}
 

@@ -48,17 +48,30 @@ import "./EquipoDetalle.css";
 
 const { Text, Title, Paragraph } = Typography;
 
-const EquipoDetalle: React.FC = () => {
+interface EquipoDetalleProps {
+  equipoId?: number;
+  isEmbedded?: boolean;
+  onBackToEquipos?: () => void;
+}
+
+const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
+  equipoId,
+  isEmbedded = false,
+  onBackToEquipos,
+}) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [equipo, setEquipo] = useState<Equipo | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Usar equipoId de props si está disponible, sino usar el parámetro de URL
+  const finalEquipoId = equipoId || (id ? parseInt(id) : null);
+
   useEffect(() => {
-    if (id) {
-      loadEquipoDetail(parseInt(id));
+    if (finalEquipoId) {
+      loadEquipoDetail(finalEquipoId);
     }
-  }, [id]);
+  }, [finalEquipoId]);
 
   const loadEquipoDetail = async (equipoId: number) => {
     try {
@@ -117,28 +130,30 @@ const EquipoDetalle: React.FC = () => {
 
   return (
     <div className="equipo-detalle-container">
-      {/* Breadcrumb */}
-      <Breadcrumb className="equipo-detalle-breadcrumb">
-        <Breadcrumb.Item>
-          <Button
-            type="link"
-            icon={<HomeOutlined />}
-            onClick={() => navigate("/dashboard")}
-          >
-            Dashboard
-          </Button>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Button
-            type="link"
-            icon={<TeamOutlined />}
-            onClick={() => navigate("/dashboard?tab=equipos")}
-          >
-            Equipos
-          </Button>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{equipo.nombre_equipo}</Breadcrumb.Item>
-      </Breadcrumb>
+      {/* Breadcrumb - solo mostrar si no está embebido */}
+      {!isEmbedded && (
+        <Breadcrumb className="equipo-detalle-breadcrumb">
+          <Breadcrumb.Item>
+            <Button
+              type="link"
+              icon={<HomeOutlined />}
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </Button>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Button
+              type="link"
+              icon={<TeamOutlined />}
+              onClick={() => navigate("/dashboard?tab=equipos")}
+            >
+              Equipos
+            </Button>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{equipo.nombre_equipo}</Breadcrumb.Item>
+        </Breadcrumb>
+      )}
 
       {/* Header con información principal */}
       <Card className="equipo-detalle-header">
@@ -165,7 +180,14 @@ const EquipoDetalle: React.FC = () => {
               <Button
                 type="primary"
                 icon={<ArrowLeftOutlined />}
-                onClick={() => navigate("/dashboard?tab=equipos")}
+                onClick={() => {
+                  if (isEmbedded && onBackToEquipos) {
+                    onBackToEquipos();
+                    navigate("/dashboard?tab=equipos");
+                  } else {
+                    navigate("/dashboard?tab=equipos");
+                  }
+                }}
                 block
               >
                 Volver a Equipos

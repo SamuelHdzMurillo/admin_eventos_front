@@ -26,7 +26,11 @@ import "./EquiposTable.css";
 
 const { Text, Title } = Typography;
 
-const EquiposTable: React.FC = () => {
+interface EquiposTableProps {
+  onEquipoSelect?: (equipoId: number) => void;
+}
+
+const EquiposTable: React.FC<EquiposTableProps> = ({ onEquipoSelect }) => {
   const navigate = useNavigate();
   const [equipos, setEquipos] = useState<Equipo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -48,7 +52,11 @@ const EquiposTable: React.FC = () => {
   };
 
   const handleViewDetail = (equipoId: number) => {
-    navigate(`/equipo/${equipoId}`);
+    if (onEquipoSelect) {
+      onEquipoSelect(equipoId);
+    } else {
+      navigate(`/equipo/${equipoId}`);
+    }
   };
 
   const getStatusColor = (status: string) => {
