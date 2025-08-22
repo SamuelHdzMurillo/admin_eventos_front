@@ -92,6 +92,23 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
   const [selectedParticipante, setSelectedParticipante] =
     useState<Participante | null>(null);
 
+  // Estados para el detalle del acompañante
+  const [acompananteDetail, setAcompananteDetail] = useState<
+    (Acompanante & { equipo: Equipo }) | null
+  >(null);
+  const [acompananteDetailVisible, setAcompananteDetailVisible] =
+    useState(false);
+  const [acompananteDetailLoading, setAcompananteDetailLoading] =
+    useState(false);
+
+  // Estados para editar acompañante
+  const [editAcompananteModalVisible, setEditAcompananteModalVisible] =
+    useState(false);
+  const [editAcompananteForm] = Form.useForm();
+  const [updatingAcompanante, setUpdatingAcompanante] = useState(false);
+  const [selectedAcompanante, setSelectedAcompanante] =
+    useState<Acompanante | null>(null);
+
   // Usar equipoId de props si está disponible, sino usar el parámetro de URL
   const finalEquipoId = equipoId || (id ? parseInt(id) : null);
 
@@ -222,6 +239,56 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
       message.error(err?.message || "No se pudo actualizar el participante");
     } finally {
       setUpdatingParticipante(false);
+    }
+  };
+
+  // Funciones para manejar acompañantes
+  const handleViewAcompanante = async (acompanante: Acompanante) => {
+    try {
+      setAcompananteDetailLoading(true);
+      const response = await eventosService.getAcompananteDetail(
+        acompanante.id
+      );
+      setAcompananteDetail(response.data);
+      setAcompananteDetailVisible(true);
+    } catch (error: any) {
+      message.error(
+        error?.message || "No se pudo cargar el detalle del acompañante"
+      );
+    } finally {
+      setAcompananteDetailLoading(false);
+    }
+  };
+
+  const handleEditAcompanante = (acompanante: Acompanante) => {
+    setSelectedAcompanante(acompanante);
+    editAcompananteForm.setFieldsValue({
+      nombre_acompanante: acompanante.nombre_acompanante,
+      rol: acompanante.rol,
+      puesto: acompanante.puesto,
+      talla: acompanante.talla,
+      telefono: acompanante.telefono,
+      email: acompanante.email,
+    });
+    setEditAcompananteModalVisible(true);
+  };
+
+  const handleUpdateAcompanante = async (values: any) => {
+    if (!selectedAcompanante) return;
+
+    setUpdatingAcompanante(true);
+    try {
+      await eventosService.updateAcompanante(selectedAcompanante.id, values);
+      setEditAcompananteModalVisible(false);
+      message.success("Acompañante actualizado exitosamente");
+      // Recargar el equipo para obtener los datos actualizados
+      if (finalEquipoId) {
+        loadEquipoDetail(finalEquipoId);
+      }
+    } catch (err: any) {
+      message.error(err?.message || "No se pudo actualizar el acompañante");
+    } finally {
+      setUpdatingAcompanante(false);
     }
   };
 
@@ -515,6 +582,31 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
                 dataIndex: "email",
                 key: "email",
                 render: (text: string) => <a href={`mailto:${text}`}>{text}</a>,
+              },
+              {
+                title: "Talla",
+                dataIndex: "talla",
+                key: "talla",
+              },
+              {
+                title: "Acciones",
+                key: "actions",
+                render: (_, record: Acompanante) => (
+                  <Space size="small">
+                    <Button
+                      type="text"
+                      icon={<EyeOutlined />}
+                      onClick={() => handleViewAcompanante(record)}
+                      title="Ver detalle"
+                    />
+                    <Button
+                      type="text"
+                      icon={<EditOutlined />}
+                      onClick={() => handleEditAcompanante(record)}
+                      title="Editar"
+                    />
+                  </Space>
+                ),
               },
             ]}
           />
@@ -1093,6 +1185,201 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
                 {updatingParticipante
                   ? "Actualizando..."
                   : "Actualizar Participante"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Modal de detalle del acompañante */}
+      <Modal
+        title="Detalle del Acompañante"
+        open={acompananteDetailVisible}
+        onCancel={() => setAcompananteDetailVisible(false)}
+        footer={[
+          <Button
+            key="close"
+            onClick={() => setAcompananteDetailVisible(false)}
+          >
+            Cerrar
+          </Button>,
+        ]}
+        width={800}
+      >
+        {acompananteDetailLoading ? (
+          <div style={{ textAlign: "center", padding: "40px" }}>
+            <Spin size="large" />
+            <Text style={{ display: "block", marginTop: "16px" }}>
+              Cargando información del acompañante...
+            </Text>
+          </div>
+        ) : acompananteDetail ? (
+          <div>
+            <Descriptions bordered column={2} size="middle">
+              <Descriptions.Item label="Nombre" span={2}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  {acompananteDetail.nombre_acompanante}
+                </Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Rol">
+                <Text>{acompananteDetail.rol}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Puesto">
+                <Text>{acompananteDetail.puesto}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Teléfono">
+                <Text>{acompananteDetail.telefono}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Email">
+                <a href={`mailto:${acompananteDetail.email}`}>
+                  {acompananteDetail.email}
+                </a>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Talla">
+                <Text>{acompananteDetail.talla}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Equipo">
+                <Text strong>{acompananteDetail.equipo?.nombre_equipo}</Text>
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+        ) : (
+          <Empty description="No se encontró la información del acompañante" />
+        )}
+      </Modal>
+
+      {/* Modal de edición del acompañante */}
+      <Modal
+        title="Editar Acompañante"
+        open={editAcompananteModalVisible}
+        onCancel={() => setEditAcompananteModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <Form
+          form={editAcompananteForm}
+          layout="vertical"
+          onFinish={handleUpdateAcompanante}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="nombre_acompanante"
+                label="Nombre del Acompañante"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa el nombre del acompañante",
+                  },
+                ]}
+              >
+                <Input placeholder="Nombre del acompañante" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="rol"
+                label="Rol"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa el rol",
+                  },
+                ]}
+              >
+                <Input placeholder="Rol del acompañante" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="puesto"
+                label="Puesto"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa el puesto",
+                  },
+                ]}
+              >
+                <Input placeholder="Puesto del acompañante" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "Por favor ingresa un correo válido",
+                  },
+                ]}
+              >
+                <Input placeholder="Email del acompañante" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="telefono"
+                label="Teléfono"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa el teléfono",
+                  },
+                ]}
+              >
+                <Input placeholder="Teléfono del acompañante" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="talla"
+                label="Talla"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa la talla",
+                  },
+                ]}
+              >
+                <Select placeholder="Selecciona la talla">
+                  <Select.Option value="XS">XS</Select.Option>
+                  <Select.Option value="S">S</Select.Option>
+                  <Select.Option value="M">M</Select.Option>
+                  <Select.Option value="L">L</Select.Option>
+                  <Select.Option value="XL">XL</Select.Option>
+                  <Select.Option value="XXL">XXL</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item style={{ marginTop: 24, textAlign: "right" }}>
+            <Space>
+              <Button onClick={() => setEditAcompananteModalVisible(false)}>
+                Cancelar
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={updatingAcompanante}
+              >
+                {updatingAcompanante
+                  ? "Actualizando..."
+                  : "Actualizar Acompañante"}
               </Button>
             </Space>
           </Form.Item>

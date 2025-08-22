@@ -253,4 +253,50 @@ export const eventosService = {
     }
     return data as ApiItemResponse<Participante>;
   },
+
+  // Métodos para acompañantes
+  async getAcompananteDetail(
+    acompananteId: number
+  ): Promise<ApiItemResponse<Acompanante & { equipo: Equipo }>> {
+    const response = await fetch(
+      `${config.API_URL}/acompanantes/${acompananteId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...authService.getAuthHeader(),
+        },
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        data?.message || "No se pudo cargar el detalle del acompañante"
+      );
+    }
+    return data as ApiItemResponse<Acompanante & { equipo: Equipo }>;
+  },
+
+  async updateAcompanante(
+    acompananteId: number,
+    acompananteData: Partial<Acompanante>
+  ): Promise<ApiItemResponse<Acompanante>> {
+    const response = await fetch(
+      `${config.API_URL}/acompanantes/${acompananteId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...authService.getAuthHeader(),
+        },
+        body: JSON.stringify(acompananteData),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.message || "No se pudo actualizar el acompañante");
+    }
+    return data as ApiItemResponse<Acompanante>;
+  },
 };
