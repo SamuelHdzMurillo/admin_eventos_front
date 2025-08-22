@@ -187,6 +187,7 @@ const EquiposTable: React.FC<EquiposTableProps> = ({ onEquipoSelect }) => {
             showTotal: (total, range) =>
               `${range[0]}-${range[1]} de ${total} equipos`,
           }}
+          scroll={{ x: 1200 }}
           locale={{
             emptyText: (
               <Empty

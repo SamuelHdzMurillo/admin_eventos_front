@@ -538,6 +538,7 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
             rowKey="id"
             size="middle"
             pagination={false}
+            scroll={{ x: 1000 }}
             columns={[
               {
                 title: "Nombre",
@@ -616,6 +617,7 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
             rowKey="id"
             size="middle"
             pagination={false}
+            scroll={{ x: 800 }}
             columns={[
               {
                 title: "Nombre",

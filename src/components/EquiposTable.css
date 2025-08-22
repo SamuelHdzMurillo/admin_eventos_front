@@ -225,3 +225,192 @@
 .equipo-detail-modal .ant-modal-body::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Estilos adicionales para tablas responsive */
+.equipos-table .ant-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.equipos-table .ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.equipos-table .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 2px solid #e8e8e8;
+  padding: 16px 12px;
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody > tr > td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody > tr:hover > td {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .equipos-table .ant-table-wrapper {
+    margin: 0 -16px;
+    border-radius: 0;
+  }
+
+  .equipos-table .ant-table {
+    font-size: 14px;
+  }
+
+  .equipos-table .ant-table-thead > tr > th {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .equipos-table .ant-table-tbody > tr > td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .equipos-table .ant-table-pagination {
+    margin: 16px 8px;
+  }
+
+  .equipos-table .ant-table-pagination .ant-pagination-item,
+  .equipos-table .ant-table-pagination .ant-pagination-prev,
+  .equipos-table .ant-table-pagination .ant-pagination-next {
+    min-width: 32px;
+    height: 32px;
+    line-height: 30px;
+  }
+}
+
+/* Responsive para tablets */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .equipos-table .ant-table-wrapper {
+    margin: 0 -8px;
+  }
+
+  .equipos-table .ant-table-thead > tr > th {
+    padding: 14px 10px;
+  }
+
+  .equipos-table .ant-table-tbody > tr > td {
+    padding: 11px 10px;
+  }
+}
+
+/* Mejoras para scroll horizontal */
+.equipos-table .ant-table-body {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar {
+  height: 8px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animaciones para tablas */
+.equipos-table .ant-table-wrapper {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.equipos-table .ant-table-tbody > tr {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.equipos-table .ant-table-tbody > tr:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.equipos-table .ant-table-tbody > tr:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.equipos-table .ant-table-tbody > tr:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.equipos-table .ant-table-tbody > tr:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.equipos-table .ant-table-tbody > tr:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Estilos para botones de acción en tablas */
+.equipos-table .ant-table-tbody .ant-btn {
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody .ant-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+}
+
+/* Estilos para tags en tablas */
+.equipos-table .ant-table-tbody .ant-tag {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody .ant-tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para enlaces en tablas */
+.equipos-table .ant-table-tbody a {
+  color: #1890ff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody a:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* Estilos para avatares en tablas */
+.equipos-table .ant-table-tbody .ant-avatar {
+  transition: all 0.3s ease;
+}
+
+.equipos-table .ant-table-tbody .ant-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Keyframes para animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

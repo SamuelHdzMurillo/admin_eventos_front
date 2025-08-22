@@ -270,6 +270,7 @@ const EventSelector: React.FC = () => {
             dataSource={detail.equipos}
             rowKey="id"
             pagination={{ pageSize: 5 }}
+            scroll={{ x: 800 }}
           />
         )}
       </Card>
@@ -626,7 +627,7 @@ const ParticipantesTable: React.FC = () => {
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} de ${total} participantes`,
         }}
-        scroll={{ x: 1200 }}
+        scroll={{ x: 1500 }}
       />
 
       {/* Modal de detalle del participante */}
@@ -1399,6 +1400,7 @@ const Dashboard: React.FC = () => {
                       pagination={false}
                       rowKey="id"
                       className="events-table"
+                      scroll={{ x: 800 }}
                     />
                   </Card>
                 </Col>
