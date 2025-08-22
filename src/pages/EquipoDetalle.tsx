@@ -109,6 +109,19 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
   const [selectedAcompanante, setSelectedAcompanante] =
     useState<Acompanante | null>(null);
 
+  // Estados para el detalle de la receta
+  const [recetaDetail, setRecetaDetail] = useState<
+    (Receta & { equipo: Equipo }) | null
+  >(null);
+  const [recetaDetailVisible, setRecetaDetailVisible] = useState(false);
+  const [recetaDetailLoading, setRecetaDetailLoading] = useState(false);
+
+  // Estados para editar receta
+  const [editRecetaModalVisible, setEditRecetaModalVisible] = useState(false);
+  const [editRecetaForm] = Form.useForm();
+  const [updatingReceta, setUpdatingReceta] = useState(false);
+  const [selectedReceta, setSelectedReceta] = useState<Receta | null>(null);
+
   // Usar equipoId de props si está disponible, sino usar el parámetro de URL
   const finalEquipoId = equipoId || (id ? parseInt(id) : null);
 
@@ -289,6 +302,54 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
       message.error(err?.message || "No se pudo actualizar el acompañante");
     } finally {
       setUpdatingAcompanante(false);
+    }
+  };
+
+  // Funciones para manejar recetas
+  const handleViewReceta = async (receta: Receta) => {
+    try {
+      setRecetaDetailLoading(true);
+      const response = await eventosService.getRecetaDetail(receta.id);
+      setRecetaDetail(response.data);
+      setRecetaDetailVisible(true);
+    } catch (error: any) {
+      message.error(
+        error?.message || "No se pudo cargar el detalle de la receta"
+      );
+    } finally {
+      setRecetaDetailLoading(false);
+    }
+  };
+
+  const handleEditReceta = (receta: Receta) => {
+    setSelectedReceta(receta);
+    editRecetaForm.setFieldsValue({
+      tipo_receta: receta.tipo_receta,
+      descripcion: receta.descripcion,
+      ingredientes: receta.ingredientes,
+      preparacion: receta.preparacion,
+      observaciones: receta.observaciones,
+      creado_por: receta.creado_por,
+    });
+    setEditRecetaModalVisible(true);
+  };
+
+  const handleUpdateReceta = async (values: any) => {
+    if (!selectedReceta) return;
+
+    setUpdatingReceta(true);
+    try {
+      await eventosService.updateReceta(selectedReceta.id, values);
+      setEditRecetaModalVisible(false);
+      message.success("Receta actualizada exitosamente");
+      // Recargar el equipo para obtener los datos actualizados
+      if (finalEquipoId) {
+        loadEquipoDetail(finalEquipoId);
+      }
+    } catch (err: any) {
+      message.error(err?.message || "No se pudo actualizar la receta");
+    } finally {
+      setUpdatingReceta(false);
     }
   };
 
@@ -626,7 +687,23 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
               title={`${receta.tipo_receta} - ${receta.descripcion}`}
               style={{ marginBottom: 16 }}
               extra={
-                <Text type="secondary">Creado por: {receta.creado_por}</Text>
+                <Space>
+                  <Text type="secondary">Creado por: {receta.creado_por}</Text>
+                  <Space size="small">
+                    <Button
+                      type="text"
+                      icon={<EyeOutlined />}
+                      onClick={() => handleViewReceta(receta)}
+                      title="Ver detalle"
+                    />
+                    <Button
+                      type="text"
+                      icon={<EditOutlined />}
+                      onClick={() => handleEditReceta(receta)}
+                      title="Editar"
+                    />
+                  </Space>
+                </Space>
               }
             >
               <Descriptions column={1} size="small">
@@ -1380,6 +1457,181 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
                 {updatingAcompanante
                   ? "Actualizando..."
                   : "Actualizar Acompañante"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Modal de detalle de la receta */}
+      <Modal
+        title="Detalle de la Receta"
+        open={recetaDetailVisible}
+        onCancel={() => setRecetaDetailVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setRecetaDetailVisible(false)}>
+            Cerrar
+          </Button>,
+        ]}
+        width={800}
+      >
+        {recetaDetailLoading ? (
+          <div style={{ textAlign: "center", padding: "40px" }}>
+            <Spin size="large" />
+            <Text style={{ display: "block", marginTop: "16px" }}>
+              Cargando información de la receta...
+            </Text>
+          </div>
+        ) : recetaDetail ? (
+          <div>
+            <Descriptions bordered column={1} size="middle">
+              <Descriptions.Item label="Tipo de Receta">
+                <Text strong style={{ fontSize: "16px" }}>
+                  {recetaDetail.tipo_receta}
+                </Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Descripción">
+                <Text>{recetaDetail.descripcion}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Ingredientes">
+                <Text style={{ whiteSpace: "pre-line" }}>
+                  {recetaDetail.ingredientes}
+                </Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Preparación">
+                <Text style={{ whiteSpace: "pre-line" }}>
+                  {recetaDetail.preparacion}
+                </Text>
+              </Descriptions.Item>
+
+              {recetaDetail.observaciones && (
+                <Descriptions.Item label="Observaciones">
+                  <Text style={{ whiteSpace: "pre-line" }}>
+                    {recetaDetail.observaciones}
+                  </Text>
+                </Descriptions.Item>
+              )}
+
+              <Descriptions.Item label="Creado por">
+                <Text>{recetaDetail.creado_por}</Text>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Equipo">
+                <Text strong>{recetaDetail.equipo?.nombre_equipo}</Text>
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+        ) : (
+          <Empty description="No se encontró la información de la receta" />
+        )}
+      </Modal>
+
+      {/* Modal de edición de la receta */}
+      <Modal
+        title="Editar Receta"
+        open={editRecetaModalVisible}
+        onCancel={() => setEditRecetaModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <Form
+          form={editRecetaForm}
+          layout="vertical"
+          onFinish={handleUpdateReceta}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="tipo_receta"
+                label="Tipo de Receta"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa el tipo de receta",
+                  },
+                ]}
+              >
+                <Input placeholder="Tipo de receta" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="creado_por"
+                label="Creado por"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingresa quién creó la receta",
+                  },
+                ]}
+              >
+                <Input placeholder="Nombre del creador" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+            name="descripcion"
+            label="Descripción"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa la descripción",
+              },
+            ]}
+          >
+            <Input.TextArea placeholder="Descripción de la receta" rows={3} />
+          </Form.Item>
+
+          <Form.Item
+            name="ingredientes"
+            label="Ingredientes"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa los ingredientes",
+              },
+            ]}
+          >
+            <Input.TextArea
+              placeholder="Lista de ingredientes (uno por línea)"
+              rows={5}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="preparacion"
+            label="Preparación"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa los pasos de preparación",
+              },
+            ]}
+          >
+            <Input.TextArea
+              placeholder="Pasos de preparación (uno por línea)"
+              rows={8}
+            />
+          </Form.Item>
+
+          <Form.Item name="observaciones" label="Observaciones">
+            <Input.TextArea
+              placeholder="Observaciones adicionales (opcional)"
+              rows={3}
+            />
+          </Form.Item>
+
+          <Form.Item style={{ marginTop: 24, textAlign: "right" }}>
+            <Space>
+              <Button onClick={() => setEditRecetaModalVisible(false)}>
+                Cancelar
+              </Button>
+              <Button type="primary" htmlType="submit" loading={updatingReceta}>
+                {updatingReceta ? "Actualizando..." : "Actualizar Receta"}
               </Button>
             </Space>
           </Form.Item>

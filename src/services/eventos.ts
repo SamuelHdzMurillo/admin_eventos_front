@@ -299,4 +299,44 @@ export const eventosService = {
     }
     return data as ApiItemResponse<Acompanante>;
   },
+
+  // Métodos para recetas
+  async getRecetaDetail(
+    recetaId: number
+  ): Promise<ApiItemResponse<Receta & { equipo: Equipo }>> {
+    const response = await fetch(`${config.API_URL}/recetas/${recetaId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        data?.message || "No se pudo cargar el detalle de la receta"
+      );
+    }
+    return data as ApiItemResponse<Receta & { equipo: Equipo }>;
+  },
+
+  async updateReceta(
+    recetaId: number,
+    recetaData: Partial<Receta>
+  ): Promise<ApiItemResponse<Receta>> {
+    const response = await fetch(`${config.API_URL}/recetas/${recetaId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(recetaData),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.message || "No se pudo actualizar la receta");
+    }
+    return data as ApiItemResponse<Receta>;
+  },
 };
