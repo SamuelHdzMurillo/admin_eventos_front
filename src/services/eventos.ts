@@ -231,6 +231,25 @@ export const eventosService = {
     return data as ApiItemResponse<Participante & { equipo: Equipo }>;
   },
 
+  async listParticipantes(): Promise<
+    ApiListResponse<Participante & { equipo: Equipo }>
+  > {
+    const response = await fetch(`${config.API_URL}/participantes`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(
+        data?.message || "No se pudo cargar la lista de participantes"
+      );
+    }
+    return data as ApiListResponse<Participante & { equipo: Equipo }>;
+  },
+
   async updateParticipante(
     participanteId: number,
     participanteData: Partial<Participante>

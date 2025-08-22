@@ -16,6 +16,7 @@ import Contacto from "./pages/Contacto";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import EquipoDetalle from "./pages/EquipoDetalle";
+
 import "./App.css";
 
 function AppContent() {
