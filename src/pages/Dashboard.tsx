@@ -51,6 +51,10 @@ import {
   EyeOutlined,
   EditOutlined,
   EnvironmentOutlined,
+  HeartOutlined,
+  SafetyOutlined,
+  AlertOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons";
 import "./Dashboard.css";
 import { eventosService } from "../services/eventos";
@@ -1017,6 +1021,23 @@ const Dashboard: React.FC = () => {
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false);
   const [selectedEquipoId, setSelectedEquipoId] = useState<number | null>(null);
 
+  // Estados para estadísticas dinámicas
+  const [participantes, setParticipantes] = useState<
+    (Participante & { equipo: Equipo })[]
+  >([]);
+  const [equipos, setEquipos] = useState<Equipo[]>([]);
+  const [loadingStats, setLoadingStats] = useState(true);
+  const [stats, setStats] = useState({
+    totalParticipantes: 0,
+    totalEquipos: 0,
+    participantesConSeguro: 0,
+    participantesAlergicos: 0,
+    participantesPorEntidad: {} as Record<string, number>,
+    tiposSangre: {} as Record<string, number>,
+    especialidades: {} as Record<string, number>,
+    semestres: {} as Record<string, number>,
+  });
+
   // Verificar si hay un parámetro de pestaña en la URL
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -1024,191 +1045,119 @@ const Dashboard: React.FC = () => {
       setSelectedKey(tab);
     }
   }, [searchParams]);
-  // Datos de estadísticas
-  const stats = [
+
+  // Cargar estadísticas dinámicas
+  useEffect(() => {
+    loadDashboardStats();
+  }, []);
+
+  const loadDashboardStats = async () => {
+    try {
+      setLoadingStats(true);
+      const [participantesRes, equiposRes] = await Promise.all([
+        eventosService.listParticipantes(),
+        eventosService.listEquipos(),
+      ]);
+
+      const participantesData = participantesRes.data;
+      const equiposData = equiposRes.data;
+
+      setParticipantes(participantesData);
+      setEquipos(equiposData);
+
+      // Calcular estadísticas
+      const equiposUnicos = new Set(participantesData.map((p) => p.equipo_id));
+      const participantesConSeguro = participantesData.filter(
+        (p) => p.seguro_facultativo
+      ).length;
+      const participantesAlergicos = participantesData.filter(
+        (p) => p.alergico
+      ).length;
+
+      // Estadísticas por entidad federativa
+      const participantesPorEntidad: Record<string, number> = {};
+      participantesData.forEach((p) => {
+        const entidad = p.equipo?.entidad_federativa || "Sin especificar";
+        participantesPorEntidad[entidad] =
+          (participantesPorEntidad[entidad] || 0) + 1;
+      });
+
+      // Estadísticas por tipo de sangre
+      const tiposSangre: Record<string, number> = {};
+      participantesData.forEach((p) => {
+        const tipo = p.tipo_sangre_participante || "Sin especificar";
+        tiposSangre[tipo] = (tiposSangre[tipo] || 0) + 1;
+      });
+
+      // Estadísticas por especialidad
+      const especialidades: Record<string, number> = {};
+      participantesData.forEach((p) => {
+        const especialidad = p.especialidad_participante || "Sin especificar";
+        especialidades[especialidad] = (especialidades[especialidad] || 0) + 1;
+      });
+
+      // Estadísticas por semestre
+      const semestres: Record<string, number> = {};
+      participantesData.forEach((p) => {
+        const semestre = p.semestre_participante || "Sin especificar";
+        semestres[semestre] = (semestres[semestre] || 0) + 1;
+      });
+
+      setStats({
+        totalParticipantes: participantesData.length,
+        totalEquipos: equiposUnicos.size,
+        participantesConSeguro,
+        participantesAlergicos,
+        participantesPorEntidad,
+        tiposSangre,
+        especialidades,
+        semestres,
+      });
+    } catch (error: any) {
+      console.error("Error loading dashboard stats:", error);
+      message.error(
+        error?.message || "No se pudo cargar las estadísticas del dashboard"
+      );
+    } finally {
+      setLoadingStats(false);
+    }
+  };
+
+  // Estadísticas dinámicas para el dashboard
+  const dashboardStats = [
     {
-      title: "Total de Eventos",
-      value: 156,
-      prefix: <CalendarOutlined />,
-      color: "#1890ff",
-      change: "+12%",
-      changeType: "increase",
-    },
-    {
-      title: "Participantes",
-      value: 2847,
+      title: "Total de Participantes",
+      value: stats.totalParticipantes,
       prefix: <TeamOutlined />,
-      color: "#52c41a",
-      change: "+8%",
-      changeType: "increase",
+      color: "#1890ff",
+      suffix: "participantes",
+      statType: "participantes",
     },
     {
-      title: "Ingresos",
-      value: 45680,
-      prefix: <DollarOutlined />,
-      color: "#faad14",
-      change: "+23%",
-      changeType: "increase",
-      suffix: "USD",
-    },
-    {
-      title: "Eventos Completados",
-      value: 142,
+      title: "Total de Equipos",
+      value: stats.totalEquipos,
       prefix: <TrophyOutlined />,
-      color: "#722ed1",
-      change: "+5%",
-      changeType: "increase",
+      color: "#52c41a",
+      suffix: "equipos",
+      statType: "equipos",
+    },
+    {
+      title: "Con Seguro Facultativo",
+      value: stats.participantesConSeguro,
+      prefix: <SafetyOutlined />,
+      color: "#faad14",
+      suffix: "participantes",
+      statType: "seguro",
+    },
+    {
+      title: "Con Alergias",
+      value: stats.participantesAlergicos,
+      prefix: <AlertOutlined />,
+      color: "#ff4d4f",
+      suffix: "participantes",
+      statType: "alergias",
     },
   ];
-
-  // Datos de eventos recientes
-  const recentEvents = [
-    {
-      id: 1,
-      name: "Conferencia de Tecnología 2024",
-      date: "2024-01-15",
-      status: "Completado",
-      participants: 250,
-      revenue: 15000,
-    },
-    {
-      id: 2,
-      name: "Workshop de Marketing Digital",
-      date: "2024-01-20",
-      status: "En Progreso",
-      participants: 180,
-      revenue: 12000,
-    },
-    {
-      id: 3,
-      name: "Seminario de Liderazgo",
-      date: "2024-01-25",
-      status: "Programado",
-      participants: 120,
-      revenue: 8000,
-    },
-    {
-      id: 4,
-      name: "Expo de Innovación",
-      date: "2024-02-01",
-      status: "Programado",
-      participants: 300,
-      revenue: 20000,
-    },
-  ];
-
-  // Datos de participantes por categoría
-  const participantData = [
-    { type: "Profesionales", value: 45, color: "#1890ff" },
-    { type: "Estudiantes", value: 30, color: "#52c41a" },
-    { type: "Empresarios", value: 15, color: "#faad14" },
-    { type: "Otros", value: 10, color: "#722ed1" },
-  ];
-
-  // Columnas para la tabla de eventos
-  const columns = [
-    {
-      title: "Evento",
-      dataIndex: "name",
-      key: "name",
-      render: (text: string) => (
-        <Space>
-          <Avatar icon={<CalendarOutlined />} />
-          <Text strong>{text}</Text>
-        </Space>
-      ),
-    },
-    {
-      title: "Fecha",
-      dataIndex: "date",
-      key: "date",
-      render: (date: string) => (
-        <Text type="secondary">{new Date(date).toLocaleDateString()}</Text>
-      ),
-    },
-    {
-      title: "Estado",
-      dataIndex: "status",
-      key: "status",
-      render: (status: string) => {
-        let color = "default";
-        let icon = <ClockCircleOutlined />;
-
-        if (status === "Completado") {
-          color = "success";
-          icon = <CheckCircleOutlined />;
-        } else if (status === "En Progreso") {
-          color = "processing";
-          icon = <ClockCircleOutlined />;
-        } else if (status === "Programado") {
-          color = "warning";
-          icon = <ExclamationCircleOutlined />;
-        }
-
-        return (
-          <Tag color={color} icon={icon}>
-            {status}
-          </Tag>
-        );
-      },
-    },
-    {
-      title: "Participantes",
-      dataIndex: "participants",
-      key: "participants",
-      render: (value: number) => <Text strong>{value.toLocaleString()}</Text>,
-    },
-    {
-      title: "Ingresos",
-      dataIndex: "revenue",
-      key: "revenue",
-      render: (value: number) => (
-        <Text strong style={{ color: "#52c41a" }}>
-          ${value.toLocaleString()}
-        </Text>
-      ),
-    },
-  ];
-
-  // Datos para el calendario
-  const getListData = (value: any) => {
-    const listData = [];
-    const date = value.format("YYYY-MM-DD");
-
-    if (date === "2024-01-15") {
-      listData.push({
-        type: "success",
-        content: "Conferencia de Tecnología",
-      });
-    }
-    if (date === "2024-01-20") {
-      listData.push({
-        type: "processing",
-        content: "Workshop Marketing",
-      });
-    }
-    if (date === "2024-01-25") {
-      listData.push({
-        type: "warning",
-        content: "Seminario Liderazgo",
-      });
-    }
-
-    return listData;
-  };
-
-  const dateCellRender = (value: any) => {
-    const listData = getListData(value);
-    return (
-      <ul className="events">
-        {listData.map((item, index) => (
-          <li key={index}>
-            <Badge status={item.type as any} text={item.content} />
-          </li>
-        ))}
-      </ul>
-    );
-  };
 
   // Menú del sidebar
   const menuItems = [
@@ -1352,144 +1301,270 @@ const Dashboard: React.FC = () => {
           {selectedKey === "dashboard" && (
             <div className="dashboard-content-wrapper">
               {/* Estadísticas principales */}
-              <Row gutter={[24, 24]} className="stats-row">
-                {stats.map((stat, index) => (
-                  <Col xs={24} sm={12} lg={6} key={index}>
-                    <Card className="stat-card" hoverable>
-                      <Statistic
-                        title={stat.title}
-                        value={stat.value}
-                        prefix={stat.prefix}
-                        suffix={stat.suffix}
-                        valueStyle={{ color: stat.color }}
-                      />
-                      <div className="stat-change">
-                        <Text
-                          type={
-                            stat.changeType === "increase"
-                              ? "success"
-                              : "danger"
-                          }
-                        >
-                          {stat.changeType === "increase" ? (
-                            <RiseOutlined />
-                          ) : (
-                            <FallOutlined />
-                          )}{" "}
-                          {stat.change}
-                        </Text>
-                        <Text type="secondary">vs mes anterior</Text>
-                      </div>
+              <Row gutter={[16, 16]} className="stats-row">
+                {loadingStats ? (
+                  <Col span={24}>
+                    <Card
+                      className="stat-card"
+                      style={{ textAlign: "center", padding: "40px" }}
+                    >
+                      <Spin size="large" />
+                      <Text style={{ display: "block", marginTop: "16px" }}>
+                        Cargando estadísticas del dashboard...
+                      </Text>
                     </Card>
                   </Col>
-                ))}
+                ) : (
+                  dashboardStats.map((stat, index) => (
+                    <Col xs={24} sm={12} lg={6} key={index}>
+                      <Card
+                        className="stat-card"
+                        hoverable
+                        data-stat={stat.statType}
+                      >
+                        <Statistic
+                          title={stat.title}
+                          value={stat.value}
+                          prefix={stat.prefix}
+                          suffix={stat.suffix}
+                          valueStyle={{ color: stat.color }}
+                        />
+                      </Card>
+                    </Col>
+                  ))
+                )}
               </Row>
 
-              {/* Contenido principal */}
-              <Row gutter={[24, 24]} className="main-content">
-                {/* Tabla de eventos recientes */}
-                <Col xs={24} lg={16}>
+              {/* Sección de Equipos */}
+              <Row gutter={[16, 16]} className="main-content">
+                <Col xs={24}>
                   <Card
-                    title="Eventos Recientes"
-                    extra={<Button type="link">Ver todos</Button>}
-                    className="events-card"
+                    title={
+                      <Space>
+                        <TeamOutlined />
+                        <span>Equipos Registrados ({equipos.length})</span>
+                      </Space>
+                    }
+                    extra={
+                      <Button
+                        type="link"
+                        icon={<EyeOutlined />}
+                        onClick={() => setSelectedKey("equipos")}
+                      >
+                        Ver todos
+                      </Button>
+                    }
+                    className="equipos-section-card"
                   >
-                    <Table
-                      columns={columns}
-                      dataSource={recentEvents}
-                      pagination={false}
-                      rowKey="id"
-                      className="events-table"
-                      scroll={{ x: 800 }}
-                    />
+                    {equipos.length === 0 ? (
+                      <Empty
+                        description="No hay equipos registrados"
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                      />
+                    ) : (
+                      <Table
+                        dataSource={equipos.slice(0, 4)}
+                        pagination={false}
+                        size="small"
+                        className="equipos-table"
+                        scroll={{ x: 600 }}
+                        onRow={(record) => ({
+                          onClick: () => handleEquipoSelect(record.id),
+                          style: { cursor: "pointer" },
+                        })}
+                      >
+                        <Table.Column
+                          title="Equipo"
+                          dataIndex="nombre_equipo"
+                          key="nombre_equipo"
+                          width={200}
+                          render={(text: string) => (
+                            <Space size="small">
+                              <Avatar size="small" icon={<TeamOutlined />} />
+                              <Text strong style={{ fontSize: "11px" }}>
+                                {text}
+                              </Text>
+                            </Space>
+                          )}
+                        />
+                        <Table.Column
+                          title="Entidad"
+                          dataIndex="entidad_federativa"
+                          key="entidad_federativa"
+                          width={120}
+                          render={(text: string) => (
+                            <Text style={{ fontSize: "11px" }}>{text}</Text>
+                          )}
+                        />
+                        <Table.Column
+                          title="Anfitrión"
+                          dataIndex="nombre_anfitrion"
+                          key="nombre_anfitrion"
+                          width={150}
+                          render={(text: string) => (
+                            <Text style={{ fontSize: "11px" }}>{text}</Text>
+                          )}
+                        />
+                        <Table.Column
+                          title="Estatus"
+                          dataIndex="estatus_del_equipo"
+                          key="estatus_del_equipo"
+                          width={80}
+                          render={(status: string) => (
+                            <Tag
+                              color={
+                                status === "activo" ? "success" : "default"
+                              }
+                            >
+                              {status}
+                            </Tag>
+                          )}
+                        />
+                      </Table>
+                    )}
                   </Card>
                 </Col>
+              </Row>
 
-                {/* Sidebar con estadísticas adicionales */}
-                <Col xs={24} lg={8}>
-                  <Space
-                    direction="vertical"
-                    size="large"
-                    style={{ width: "100%" }}
+              {/* Sección de Estadísticas Detalladas */}
+              <Row gutter={[12, 12]} className="stats-detail-section">
+                <Col xs={24}>
+                  <Title level={4} className="section-title">
+                    <BarChartOutlined style={{ marginRight: 8 }} />
+                    Estadísticas Detalladas
+                  </Title>
+                </Col>
+
+                {/* Participantes por entidad federativa */}
+                <Col xs={24} lg={12}>
+                  <Card
+                    title={
+                      <Space>
+                        <EnvironmentOutlined style={{ color: "#1890ff" }} />
+                        <span>Participantes por Entidad Federativa</span>
+                      </Space>
+                    }
+                    className="chart-card"
                   >
-                    {/* Participantes por categoría */}
-                    <Card
-                      title="Participantes por Categoría"
-                      className="chart-card"
-                    >
-                      {participantData.map((item, index) => (
+                    {Object.entries(stats.participantesPorEntidad)
+                      .sort(([, a], [, b]) => b - a)
+                      .slice(0, 6)
+                      .map(([entidad, count], index) => (
                         <div key={index} className="participant-item">
                           <div className="participant-info">
-                            <Text strong>{item.type}</Text>
-                            <Text type="secondary">{item.value}%</Text>
+                            <Text strong>{entidad}</Text>
+                            <Text type="secondary">{count} participantes</Text>
                           </div>
                           <Progress
-                            percent={item.value}
-                            strokeColor={item.color}
+                            percent={Math.round(
+                              (count / stats.totalParticipantes) * 100
+                            )}
+                            strokeColor="#1890ff"
                             showInfo={false}
                             size="small"
                           />
                         </div>
                       ))}
-                    </Card>
+                  </Card>
+                </Col>
 
-                    {/* Calendario */}
-                    <Card
-                      title="Calendario de Eventos"
-                      className="calendar-card"
-                    >
-                      <Calendar
-                        fullscreen={false}
-                        dateCellRender={dateCellRender}
-                        className="dashboard-calendar"
-                      />
-                    </Card>
+                {/* Especialidades más populares */}
+                <Col xs={24} lg={12}>
+                  <Card
+                    title={
+                      <Space>
+                        <TrophyOutlined style={{ color: "#52c41a" }} />
+                        <span>Especialidades Más Populares</span>
+                      </Space>
+                    }
+                    className="chart-card"
+                  >
+                    {Object.entries(stats.especialidades)
+                      .sort(([, a], [, b]) => b - a)
+                      .slice(0, 6)
+                      .map(([especialidad, count], index) => (
+                        <div key={index} className="participant-item">
+                          <div className="participant-info">
+                            <Text strong>{especialidad}</Text>
+                            <Text type="secondary">{count} participantes</Text>
+                          </div>
+                          <Progress
+                            percent={Math.round(
+                              (count / stats.totalParticipantes) * 100
+                            )}
+                            strokeColor="#52c41a"
+                            showInfo={false}
+                            size="small"
+                          />
+                        </div>
+                      ))}
+                  </Card>
+                </Col>
 
-                    {/* Actividad reciente */}
-                    <Card title="Actividad Reciente" className="activity-card">
-                      <List
-                        itemLayout="horizontal"
-                        dataSource={[
-                          {
-                            title: "Nuevo evento creado",
-                            description: "Conferencia de Tecnología 2024",
-                            time: "Hace 2 horas",
-                          },
-                          {
-                            title: "Participante registrado",
-                            description:
-                              "Juan Pérez se registró en Workshop Marketing",
-                            time: "Hace 4 horas",
-                          },
-                          {
-                            title: "Evento completado",
-                            description:
-                              "Seminario de Liderazgo finalizado exitosamente",
-                            time: "Hace 1 día",
-                          },
-                        ]}
-                        renderItem={(item) => (
-                          <List.Item>
-                            <List.Item.Meta
-                              avatar={<Avatar icon={<UserOutlined />} />}
-                              title={item.title}
-                              description={
-                                <div>
-                                  <div>{item.description}</div>
-                                  <Text
-                                    type="secondary"
-                                    style={{ fontSize: "12px" }}
-                                  >
-                                    {item.time}
-                                  </Text>
-                                </div>
-                              }
-                            />
-                          </List.Item>
-                        )}
-                      />
-                    </Card>
-                  </Space>
+                {/* Distribución por tipo de sangre */}
+                <Col xs={24} lg={12}>
+                  <Card
+                    title={
+                      <Space>
+                        <HeartOutlined style={{ color: "#ff4d4f" }} />
+                        <span>Distribución por Tipo de Sangre</span>
+                      </Space>
+                    }
+                    className="chart-card"
+                  >
+                    {Object.entries(stats.tiposSangre)
+                      .sort(([, a], [, b]) => b - a)
+                      .slice(0, 6)
+                      .map(([tipo, count], index) => (
+                        <div key={index} className="participant-item">
+                          <div className="participant-info">
+                            <Text strong>{tipo}</Text>
+                            <Text type="secondary">{count} participantes</Text>
+                          </div>
+                          <Progress
+                            percent={Math.round(
+                              (count / stats.totalParticipantes) * 100
+                            )}
+                            strokeColor="#ff4d4f"
+                            showInfo={false}
+                            size="small"
+                          />
+                        </div>
+                      ))}
+                  </Card>
+                </Col>
+
+                {/* Distribución por semestre */}
+                <Col xs={24} lg={12}>
+                  <Card
+                    title={
+                      <Space>
+                        <CalendarOutlined style={{ color: "#722ed1" }} />
+                        <span>Distribución por Semestre</span>
+                      </Space>
+                    }
+                    className="chart-card"
+                  >
+                    {Object.entries(stats.semestres)
+                      .sort(([, a], [, b]) => b - a)
+                      .slice(0, 6)
+                      .map(([semestre, count], index) => (
+                        <div key={index} className="participant-item">
+                          <div className="participant-info">
+                            <Text strong>{semestre}</Text>
+                            <Text type="secondary">{count} participantes</Text>
+                          </div>
+                          <Progress
+                            percent={Math.round(
+                              (count / stats.totalParticipantes) * 100
+                            )}
+                            strokeColor="#722ed1"
+                            showInfo={false}
+                            size="small"
+                          />
+                        </div>
+                      ))}
+                  </Card>
                 </Col>
               </Row>
             </div>
@@ -1571,3 +1646,253 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
+// Componente para estadísticas de participantes
+const ParticipantesStats: React.FC = () => {
+  const [participantes, setParticipantes] = useState<
+    (Participante & { equipo: Equipo })[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalParticipantes: 0,
+    totalEquipos: 0,
+    participantesConSeguro: 0,
+    participantesAlergicos: 0,
+    participantesPorEntidad: {} as Record<string, number>,
+    tiposSangre: {} as Record<string, number>,
+    especialidades: {} as Record<string, number>,
+    semestres: {} as Record<string, number>,
+  });
+
+  useEffect(() => {
+    loadParticipantes();
+  }, []);
+
+  const loadParticipantes = async () => {
+    try {
+      setLoading(true);
+      const response = await eventosService.listParticipantes();
+      const data = response.data;
+      setParticipantes(data);
+
+      // Calcular estadísticas
+      const equiposUnicos = new Set(data.map((p) => p.equipo_id));
+      const participantesConSeguro = data.filter(
+        (p) => p.seguro_facultativo
+      ).length;
+      const participantesAlergicos = data.filter((p) => p.alergico).length;
+
+      // Estadísticas por entidad federativa
+      const participantesPorEntidad: Record<string, number> = {};
+      data.forEach((p) => {
+        const entidad = p.equipo?.entidad_federativa || "Sin especificar";
+        participantesPorEntidad[entidad] =
+          (participantesPorEntidad[entidad] || 0) + 1;
+      });
+
+      // Estadísticas por tipo de sangre
+      const tiposSangre: Record<string, number> = {};
+      data.forEach((p) => {
+        const tipo = p.tipo_sangre_participante || "Sin especificar";
+        tiposSangre[tipo] = (tiposSangre[tipo] || 0) + 1;
+      });
+
+      // Estadísticas por especialidad
+      const especialidades: Record<string, number> = {};
+      data.forEach((p) => {
+        const especialidad = p.especialidad_participante || "Sin especificar";
+        especialidades[especialidad] = (especialidades[especialidad] || 0) + 1;
+      });
+
+      // Estadísticas por semestre
+      const semestres: Record<string, number> = {};
+      data.forEach((p) => {
+        const semestre = p.semestre_participante || "Sin especificar";
+        semestres[semestre] = (semestres[semestre] || 0) + 1;
+      });
+
+      setStats({
+        totalParticipantes: data.length,
+        totalEquipos: equiposUnicos.size,
+        participantesConSeguro,
+        participantesAlergicos,
+        participantesPorEntidad,
+        tiposSangre,
+        especialidades,
+        semestres,
+      });
+    } catch (error: any) {
+      console.error("Error loading participantes:", error);
+      message.error(
+        error?.message || "No se pudo cargar las estadísticas de participantes"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const statsCards = [
+    {
+      title: "Total de Participantes",
+      value: stats.totalParticipantes,
+      prefix: <TeamOutlined />,
+      color: "#1890ff",
+      suffix: "participantes",
+      statType: "participantes",
+    },
+    {
+      title: "Total de Equipos",
+      value: stats.totalEquipos,
+      prefix: <TrophyOutlined />,
+      color: "#52c41a",
+      suffix: "equipos",
+      statType: "equipos",
+    },
+    {
+      title: "Con Seguro Facultativo",
+      value: stats.participantesConSeguro,
+      prefix: <SafetyOutlined />,
+      color: "#faad14",
+      suffix: "participantes",
+      statType: "seguro",
+    },
+    {
+      title: "Con Alergias",
+      value: stats.participantesAlergicos,
+      prefix: <AlertOutlined />,
+      color: "#ff4d4f",
+      suffix: "participantes",
+      statType: "alergias",
+    },
+  ];
+
+  const getTopEntidades = () => {
+    return Object.entries(stats.participantesPorEntidad)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5);
+  };
+
+  const getTopEspecialidades = () => {
+    return Object.entries(stats.especialidades)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5);
+  };
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "40px" }}>
+        <Spin size="large" />
+        <Text style={{ display: "block", marginTop: "16px" }}>
+          Cargando estadísticas de participantes...
+        </Text>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-content-wrapper">
+      {/* Estadísticas principales */}
+      <Row gutter={[24, 24]} className="stats-row">
+        {statsCards.map((stat, index) => (
+          <Col xs={24} sm={12} lg={6} key={index}>
+            <Card className="stat-card" hoverable data-stat={stat.statType}>
+              <Statistic
+                title={stat.title}
+                value={stat.value}
+                prefix={stat.prefix}
+                suffix={stat.suffix}
+                valueStyle={{ color: stat.color }}
+              />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      {/* Estadísticas detalladas */}
+      <Row gutter={[24, 24]} className="main-content">
+        {/* Participantes por entidad federativa */}
+        <Col xs={24} lg={12}>
+          <Card
+            title="Participantes por Entidad Federativa"
+            className="chart-card"
+          >
+            {getTopEntidades().map(([entidad, count], index) => (
+              <div key={index} className="participant-item">
+                <div className="participant-info">
+                  <Text strong>{entidad}</Text>
+                  <Text type="secondary">{count} participantes</Text>
+                </div>
+                <Progress
+                  percent={Math.round((count / stats.totalParticipantes) * 100)}
+                  strokeColor="#1890ff"
+                  showInfo={false}
+                  size="small"
+                />
+              </div>
+            ))}
+          </Card>
+        </Col>
+
+        {/* Especialidades más populares */}
+        <Col xs={24} lg={12}>
+          <Card title="Especialidades Más Populares" className="chart-card">
+            {getTopEspecialidades().map(([especialidad, count], index) => (
+              <div key={index} className="participant-item">
+                <div className="participant-info">
+                  <Text strong>{especialidad}</Text>
+                  <Text type="secondary">{count} participantes</Text>
+                </div>
+                <Progress
+                  percent={Math.round((count / stats.totalParticipantes) * 100)}
+                  strokeColor="#52c41a"
+                  showInfo={false}
+                  size="small"
+                />
+              </div>
+            ))}
+          </Card>
+        </Col>
+
+        {/* Distribución por tipo de sangre */}
+        <Col xs={24} lg={12}>
+          <Card title="Distribución por Tipo de Sangre" className="chart-card">
+            {Object.entries(stats.tiposSangre).map(([tipo, count], index) => (
+              <div key={index} className="participant-item">
+                <div className="participant-info">
+                  <Text strong>{tipo}</Text>
+                  <Text type="secondary">{count} participantes</Text>
+                </div>
+                <Progress
+                  percent={Math.round((count / stats.totalParticipantes) * 100)}
+                  strokeColor="#faad14"
+                  showInfo={false}
+                  size="small"
+                />
+              </div>
+            ))}
+          </Card>
+        </Col>
+
+        {/* Distribución por semestre */}
+        <Col xs={24} lg={12}>
+          <Card title="Distribución por Semestre" className="chart-card">
+            {Object.entries(stats.semestres).map(([semestre, count], index) => (
+              <div key={index} className="participant-item">
+                <div className="participant-info">
+                  <Text strong>{semestre}</Text>
+                  <Text type="secondary">{count} participantes</Text>
+                </div>
+                <Progress
+                  percent={Math.round((count / stats.totalParticipantes) * 100)}
+                  strokeColor="#722ed1"
+                  showInfo={false}
+                  size="small"
+                />
+              </div>
+            ))}
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+};

@@ -777,3 +777,440 @@
   transform: scale(1.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Estilos específicos para estadísticas de participantes */
+.participant-item {
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.participant-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.participant-item:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f8ff 100%);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 0 -12px 16px -12px;
+  transform: translateX(4px);
+}
+
+.participant-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.participant-info .ant-typography {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.participant-info .ant-typography-strong {
+  color: #1a1a1a;
+}
+
+.participant-info .ant-typography-secondary {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Estilos para las tarjetas de estadísticas de participantes */
+.chart-card {
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.chart-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.chart-card .ant-card-head {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-bottom: 1px solid #e8e8e8;
+  padding: 16px 24px;
+}
+
+.chart-card .ant-card-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.chart-card .ant-card-body {
+  padding: 20px 24px;
+}
+
+/* Estilos para las barras de progreso en estadísticas */
+.chart-card .ant-progress {
+  margin-bottom: 0;
+}
+
+.chart-card .ant-progress-line {
+  margin-bottom: 0;
+}
+
+.chart-card .ant-progress-bg {
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.chart-card .ant-progress:hover .ant-progress-bg {
+  transform: scaleY(1.1);
+}
+
+/* Animaciones específicas para estadísticas de participantes */
+.participant-item {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.participant-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.participant-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.participant-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.participant-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.participant-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Responsive para estadísticas de participantes */
+@media (max-width: 768px) {
+  .chart-card {
+    margin-bottom: 16px;
+  }
+
+  .participant-item {
+    padding: 8px 0;
+  }
+
+  .participant-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .participant-info .ant-typography {
+    font-size: 13px;
+  }
+
+  .chart-card .ant-card-head {
+    padding: 12px 16px;
+  }
+
+  .chart-card .ant-card-body {
+    padding: 16px;
+  }
+}
+
+/* Estilos para iconos en estadísticas */
+.stat-card .ant-statistic-content-prefix .anticon {
+  font-size: 24px;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .ant-statistic-content-prefix .anticon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Colores específicos para diferentes tipos de estadísticas */
+.stat-card[data-stat="participantes"] .ant-statistic-content-prefix .anticon {
+  color: #1890ff;
+}
+
+.stat-card[data-stat="equipos"] .ant-statistic-content-prefix .anticon {
+  color: #52c41a;
+}
+
+.stat-card[data-stat="seguro"] .ant-statistic-content-prefix .anticon {
+  color: #faad14;
+}
+
+.stat-card[data-stat="alergias"] .ant-statistic-content-prefix .anticon {
+  color: #ff4d4f;
+}
+
+/* Optimizar espaciado en el wrapper del contenido */
+.dashboard-content-wrapper {
+  padding: 8px;
+}
+
+/* Estilos para la sección de equipos */
+.equipos-section-card {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.equipos-section-card .ant-card-head {
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  padding: 6px 12px;
+  min-height: 40px;
+}
+
+.equipos-section-card .ant-card-head-title {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.equipos-section-card .ant-card-body {
+  padding: 8px;
+}
+
+.equipos-table {
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.equipos-table .ant-table-body {
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+/* Estilos específicos para tabla compacta y flexible */
+.equipos-table .ant-table {
+  font-size: 12px;
+}
+
+.equipos-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  padding: 4px 6px;
+  font-size: 11px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.equipos-table .ant-table-tbody > tr > td {
+  padding: 4px 6px;
+  font-size: 11px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.equipos-table .ant-table-tbody > tr:hover > td {
+  background: #f5f5f5;
+}
+
+/* Hacer la tabla más compacta y flexible */
+.equipos-table .ant-table-container {
+  border-radius: 6px;
+}
+
+/* Reducir el tamaño de los avatares en la tabla */
+.equipos-table .ant-avatar {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 10px !important;
+}
+
+/* Optimizar el espacio de las columnas */
+.equipos-table .ant-table-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Reducir el tamaño de los tags */
+.equipos-table .ant-tag {
+  font-size: 10px;
+  padding: 0 4px;
+  line-height: 16px;
+  height: 18px;
+}
+
+/* Estilos para la sección de estadísticas detalladas */
+.stats-detail-section {
+  margin-top: 8px;
+}
+
+.section-title {
+  margin-bottom: 8px !important;
+  color: #262626;
+  font-weight: 600;
+  border-left: 3px solid #1890ff;
+  padding-left: 8px;
+  background: #fafafa;
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px !important;
+}
+
+/* Mejoras en las tarjetas de estadísticas */
+.chart-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.chart-card .ant-card-head {
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  padding: 8px 12px;
+}
+
+.chart-card .ant-card-head-title {
+  font-weight: 600;
+  color: #262626;
+  font-size: 13px;
+}
+
+.chart-card .ant-card-body {
+  padding: 8px 12px;
+}
+
+/* Mejoras en los elementos de participantes */
+.participant-item {
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.participant-item:hover {
+  background: #f0f8ff;
+  border-color: #1890ff;
+}
+
+/* Optimización adicional de espaciados */
+.stats-row {
+  margin-bottom: 12px !important;
+}
+
+.main-content {
+  margin-bottom: 8px !important;
+}
+
+.stats-detail-section {
+  margin-top: 8px !important;
+}
+
+/* Reducir espaciado en las columnas */
+.stats-row .ant-col {
+  padding: 0 8px !important;
+}
+
+.main-content .ant-col {
+  padding: 0 8px !important;
+}
+
+.stats-detail-section .ant-col {
+  padding: 0 6px !important;
+}
+
+/* Reducir espaciado en el contenido principal */
+.dashboard-main {
+  padding: 8px;
+}
+
+/* Optimizar espaciado en elementos de participantes */
+.participant-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.participant-info .ant-typography {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.participant-info .ant-typography-strong {
+  color: #1a1a1a;
+}
+
+.participant-info .ant-typography-secondary {
+  color: #666;
+  font-size: 11px;
+}
+
+/* Reducir espaciado en barras de progreso */
+.chart-card .ant-progress {
+  margin-bottom: 0;
+}
+
+.chart-card .ant-progress-line {
+  margin-bottom: 0;
+}
+
+/* Hacer la tabla responsive */
+@media (max-width: 768px) {
+  .equipos-table .ant-table-thead > tr > th,
+  .equipos-table .ant-table-tbody > tr > td {
+    padding: 3px 4px;
+    font-size: 10px;
+  }
+
+  .equipos-table .ant-avatar {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 8px !important;
+  }
+
+  .equipos-table .ant-tag {
+    font-size: 9px;
+    padding: 0 3px;
+    line-height: 14px;
+    height: 16px;
+  }
+
+  .section-title {
+    font-size: 14px !important;
+    padding: 6px 8px;
+  }
+
+  .chart-card .ant-card-head {
+    padding: 8px 12px;
+  }
+
+  .chart-card .ant-card-body {
+    padding: 8px 12px;
+  }
+
+  .participant-item {
+    padding: 6px 8px;
+  }
+}
+
+/* Animaciones suaves */
+.chart-card,
+.participant-item {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
