@@ -1365,3 +1365,280 @@
   line-height: 16px;
   padding: 0 6px;
 }
+
+/* Estilos para menú jerárquico */
+.sidebar-menu .ant-menu-submenu {
+  background: transparent;
+}
+
+.sidebar-menu .ant-menu-submenu-title {
+  color: #5a6c7d;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sidebar-menu .ant-menu-submenu-title:hover {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%) !important;
+  color: #1890ff !important;
+}
+
+.sidebar-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.sidebar-menu .ant-menu-sub {
+  background: transparent;
+  border: none;
+  margin-left: 16px;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item {
+  margin: 4px 8px;
+  border-radius: 8px;
+  height: 40px;
+  line-height: 40px;
+  color: #5a6c7d;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item-selected {
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  transform: translateX(4px);
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item:hover {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%) !important;
+  color: #1890ff !important;
+  transform: translateX(2px);
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item .anticon {
+  font-size: 14px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item:hover .anticon {
+  transform: scale(1.1);
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item-selected .anticon {
+  transform: scale(1.1);
+}
+
+/* Estilos para el menú colapsado */
+.dashboard-sider.ant-layout-sider-collapsed
+  .sidebar-menu
+  .ant-menu-submenu-title {
+  padding: 0 16px;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed .sidebar-menu .ant-menu-sub {
+  margin-left: 0;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed
+  .sidebar-menu
+  .ant-menu-sub
+  .ant-menu-item {
+  margin: 2px 4px;
+  padding: 0 12px;
+}
+
+/* Responsive para menú jerárquico */
+@media (max-width: 768px) {
+  .sidebar-menu .ant-menu-sub {
+    margin-left: 12px;
+  }
+
+  .sidebar-menu .ant-menu-sub .ant-menu-item {
+    margin: 2px 6px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 12px;
+  }
+
+  .sidebar-menu .ant-menu-sub .ant-menu-item .anticon {
+    font-size: 12px;
+    margin-right: 8px;
+  }
+}
+
+/* Animaciones para menú jerárquico */
+.sidebar-menu .ant-menu-submenu {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Estilos para el indicador de submenú */
+.sidebar-menu .ant-menu-submenu-arrow {
+  color: #5a6c7d;
+  transition: all 0.3s ease;
+}
+
+.sidebar-menu .ant-menu-submenu-title:hover .ant-menu-submenu-arrow {
+  color: #1890ff;
+}
+
+.sidebar-menu
+  .ant-menu-submenu-selected
+  > .ant-menu-submenu-title
+  .ant-menu-submenu-arrow {
+  color: white;
+}
+
+/* Mejoras visuales para el menú móvil */
+.mobile-menu .ant-menu-submenu {
+  background: transparent;
+}
+
+.mobile-menu .ant-menu-submenu-title {
+  color: #5a6c7d;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu .ant-menu-submenu-title:hover {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%) !important;
+  color: #1890ff !important;
+}
+
+.mobile-menu .ant-menu-sub {
+  background: transparent;
+  border: none;
+  margin-left: 16px;
+}
+
+.mobile-menu .ant-menu-sub .ant-menu-item {
+  margin: 4px 8px;
+  border-radius: 8px;
+  height: 40px;
+  line-height: 40px;
+  color: #5a6c7d;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.mobile-menu .ant-menu-sub .ant-menu-item-selected {
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.mobile-menu .ant-menu-sub .ant-menu-item:hover {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%) !important;
+  color: #1890ff !important;
+}
+
+/* Animaciones CSS */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Aplicar animaciones a elementos del dashboard */
+.dashboard-content-wrapper {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.content-card {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.dashboard-breadcrumb-container {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Animaciones para elementos de la tabla */
+.equipos-table-embedded .stat-card-mini {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.equipos-table-embedded .stat-card-mini:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.equipos-table-embedded .stat-card-mini:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.equipos-table-embedded .stat-card-mini:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.equipos-table-embedded .stat-card-mini:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Animaciones para el menú jerárquico */
+.sidebar-menu .ant-menu-submenu {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.sidebar-menu .ant-menu-sub .ant-menu-item:nth-child(3) {
+  animation-delay: 0.3s;
+}

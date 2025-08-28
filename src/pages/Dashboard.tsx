@@ -1053,12 +1053,30 @@ const DashboardBreadcrumb: React.FC<{
           ),
         });
         break;
+      case "equipos-list":
+        items.push({
+          title: (
+            <Space>
+              <TeamOutlined />
+              <Text strong>Equipos</Text>
+            </Space>
+          ),
+        });
+        items.push({
+          title: (
+            <Space>
+              <TeamOutlined />
+              <Text strong>Lista de Equipos</Text>
+            </Space>
+          ),
+        });
+        break;
       case "equipos":
         items.push({
           title: (
             <Space>
               <TeamOutlined />
-              <Text strong>Gestión de Equipos</Text>
+              <Text strong>Equipos</Text>
             </Space>
           ),
         });
@@ -1070,10 +1088,22 @@ const DashboardBreadcrumb: React.FC<{
               <Button
                 type="link"
                 icon={<TeamOutlined />}
-                onClick={() => navigate("/dashboard?tab=equipos")}
+                onClick={() => navigate("/dashboard?tab=equipos-list")}
                 style={{ padding: 0, height: "auto" }}
               >
                 Equipos
+              </Button>
+            ),
+          },
+          {
+            title: (
+              <Button
+                type="link"
+                icon={<TeamOutlined />}
+                onClick={() => navigate("/dashboard?tab=equipos-list")}
+                style={{ padding: 0, height: "auto" }}
+              >
+                Lista de Equipos
               </Button>
             ),
           },
@@ -1088,14 +1118,28 @@ const DashboardBreadcrumb: React.FC<{
         );
         break;
       case "participants":
-        items.push({
-          title: (
-            <Space>
-              <UserOutlined />
-              <Text strong>Participantes</Text>
-            </Space>
-          ),
-        });
+        items.push(
+          {
+            title: (
+              <Button
+                type="link"
+                icon={<TeamOutlined />}
+                onClick={() => navigate("/dashboard?tab=equipos-list")}
+                style={{ padding: 0, height: "auto" }}
+              >
+                Equipos
+              </Button>
+            ),
+          },
+          {
+            title: (
+              <Space>
+                <UserOutlined />
+                <Text strong>Participantes</Text>
+              </Space>
+            ),
+          }
+        );
         break;
       case "revenue":
         items.push({
@@ -1297,17 +1341,24 @@ const Dashboard: React.FC = () => {
       key: "equipos",
       icon: <TeamOutlined />,
       label: "Equipos",
-    },
-    {
-      key: "equipo-detalle",
-      icon: <EyeOutlined />,
-      label: "Detalle de Equipo",
-      disabled: !selectedEquipoId,
-    },
-    {
-      key: "participants",
-      icon: <UserOutlined />,
-      label: "Participantes",
+      children: [
+        {
+          key: "equipos-list",
+          icon: <TeamOutlined />,
+          label: "Lista de Equipos",
+        },
+        {
+          key: "equipo-detalle",
+          icon: <EyeOutlined />,
+          label: "Detalle de Equipo",
+          disabled: !selectedEquipoId,
+        },
+        {
+          key: "participants",
+          icon: <UserOutlined />,
+          label: "Participantes",
+        },
+      ],
     },
     {
       key: "revenue",
@@ -1354,6 +1405,8 @@ const Dashboard: React.FC = () => {
         return "Dashboard General";
       case "events":
         return "Gestión de Eventos";
+      case "equipos-list":
+        return "Lista de Equipos";
       case "equipos":
         return "Gestión de Equipos";
       case "equipo-detalle":
@@ -1375,6 +1428,7 @@ const Dashboard: React.FC = () => {
         return <DashboardOutlined />;
       case "events":
         return <CalendarOutlined />;
+      case "equipos-list":
       case "equipos":
         return <TeamOutlined />;
       case "equipo-detalle":
@@ -1523,7 +1577,7 @@ const Dashboard: React.FC = () => {
                       <Button
                         type="link"
                         icon={<EyeOutlined />}
-                        onClick={() => setSelectedKey("equipos")}
+                        onClick={() => setSelectedKey("equipos-list")}
                         size="small"
                       >
                         Ver todos
@@ -1798,6 +1852,15 @@ const Dashboard: React.FC = () => {
             </div>
           )}
 
+          {selectedKey === "equipos-list" && (
+            <div className="dashboard-content-wrapper">
+              <EquiposTable
+                onEquipoSelect={handleEquipoSelect}
+                isEmbedded={true}
+              />
+            </div>
+          )}
+
           {selectedKey === "equipos" && (
             <div className="dashboard-content-wrapper">
               <EquiposTable
@@ -1812,7 +1875,7 @@ const Dashboard: React.FC = () => {
               <EquipoDetalle
                 equipoId={selectedEquipoId}
                 isEmbedded={true}
-                onBackToEquipos={() => setSelectedKey("equipos")}
+                onBackToEquipos={() => setSelectedKey("equipos-list")}
               />
             </div>
           )}
