@@ -30,6 +30,9 @@
 
 .equipos-table {
   border-radius: 0 0 8px 8px;
+  /* Eliminar altura máxima y scroll vertical forzado */
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 .equipos-table .ant-table-thead > tr > th {
@@ -415,6 +418,119 @@
   }
 }
 
+/* Estilos para tabla embebida */
+.equipos-table-embedded {
+  width: 100%;
+}
+
+/* Tarjetas de estadísticas mini */
+.stat-card-mini {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.stat-card-mini:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card-mini .ant-card-body {
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-card-mini .ant-statistic-title {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-card-mini .ant-statistic-content {
+  font-weight: 600;
+}
+
+.stat-card-mini .ant-statistic-content-prefix {
+  margin-right: 4px;
+}
+
+/* Tarjeta de tabla embebida */
+.equipos-table-card-embedded {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: white;
+  overflow: hidden;
+}
+
+.equipos-table-card-embedded .ant-card-head {
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  border-bottom: 1px solid #e8e8e8;
+  padding: 16px 24px;
+}
+
+.equipos-table-card-embedded .ant-card-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.equipos-table-card-embedded .ant-card-body {
+  padding: 0;
+}
+
+.equipos-table-card-embedded .ant-table {
+  border-radius: 0;
+}
+
+.equipos-table-card-embedded .ant-table-thead > tr > th {
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.equipos-table-card-embedded .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+
+.equipos-table-card-embedded .ant-table-tbody > tr:hover > td {
+  background: #f8f9fa;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive para tabla embebida */
+@media (max-width: 768px) {
+  .equipos-table-embedded {
+    margin: 0 -16px;
+  }
+
+  .stat-card-mini .ant-card-body {
+    padding: 12px;
+  }
+
+  .stat-card-mini .ant-statistic-title {
+    font-size: 11px;
+  }
+
+  .equipos-table-card-embedded .ant-card-head {
+    padding: 12px 16px;
+  }
+
+  .equipos-table-card-embedded .ant-table-thead > tr > th,
+  .equipos-table-card-embedded .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
 /* Estilos optimizados para tablas responsive */
 .equipos-table .ant-table-wrapper {
   overflow-x: auto;
@@ -422,6 +538,51 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* Eliminar scroll vertical innecesario */
   overflow-y: visible;
+}
+
+.equipos-table .ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+  /* Asegurar que la tabla se ajuste al contenedor */
+  width: 100%;
+  table-layout: auto;
+}
+
+.equipos-table .ant-table-thead > tr > th {
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 2px solid #e8e8e8;
+  padding: 16px 12px;
+  transition: all 0.3s ease;
+  /* Evitar que las columnas se compriman demasiado */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.equipos-table .ant-table-tbody > tr > td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  /* Permitir que el contenido se ajuste */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.equipos-table .ant-table-tbody > tr:hover > td {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+}
+
+/* Optimizar el scroll horizontal */
+.equipos-table .ant-table-body {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
 /* Estilos específicos para tabla embebida en dashboard */
@@ -434,17 +595,21 @@
 .dashboard-content-wrapper .equipos-table .ant-table {
   border-radius: 0;
   border: 1px solid #f0f0f0;
+  font-size: 14px;
 }
 
 .dashboard-content-wrapper .equipos-table .ant-table-thead > tr > th {
   background: #fafafa;
   border-bottom: 1px solid #e8e8e8;
   padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .dashboard-content-wrapper .equipos-table .ant-table-tbody > tr > td {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
 }
 
 .dashboard-content-wrapper .equipos-table .ant-table-tbody > tr:hover > td {
@@ -453,10 +618,15 @@
   box-shadow: none;
 }
 
-.equipos-table .ant-table {
-  border-radius: 8px;
-  overflow: hidden;
-  /* Asegurar que la tabla se ajuste al contenedor */
-  width: 100%;
-  table-layout: auto;
+.dashboard-content-wrapper .equipos-table .ant-avatar {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 10px !important;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-tag {
+  font-size: 11px;
+  height: 18px;
+  line-height: 16px;
+  padding: 0 6px;
 }

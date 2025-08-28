@@ -11,6 +11,9 @@ import {
   Spin,
   message,
   Empty,
+  Row,
+  Col,
+  Statistic,
 } from "antd";
 import {
   TeamOutlined,
@@ -19,6 +22,8 @@ import {
   MailOutlined,
   EnvironmentOutlined,
   EyeOutlined,
+  ReloadOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { eventosService } from "../services/eventos";
 import type { Equipo } from "../services/eventos";
@@ -163,30 +168,110 @@ const EquiposTable: React.FC<EquiposTableProps> = ({
   // Si está embebido en el dashboard, mostrar solo la tabla sin el card contenedor
   if (isEmbedded) {
     return (
-      <Table
-        className="equipos-table"
-        columns={columns}
-        dataSource={equipos}
-        rowKey="id"
-        loading={loading}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} de ${total} equipos`,
-        }}
-        scroll={{ x: 1200 }}
-        locale={{
-          emptyText: (
-            <Empty
-              className="equipos-table-empty"
-              description="No hay equipos registrados"
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-            />
-          ),
-        }}
-      />
+      <div className="equipos-table-embedded">
+        {/* Header con estadísticas */}
+        <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+          <Col xs={24} sm={12} md={6}>
+            <Card size="small" className="stat-card-mini">
+              <Statistic
+                title="Total Equipos"
+                value={equipos.length}
+                prefix={<TeamOutlined />}
+                valueStyle={{ color: "#1890ff", fontSize: "24px" }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card size="small" className="stat-card-mini">
+              <Statistic
+                title="Activos"
+                value={
+                  equipos.filter((e) => e.estatus_del_equipo === "activo")
+                    .length
+                }
+                valueStyle={{ color: "#52c41a", fontSize: "24px" }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card size="small" className="stat-card-mini">
+              <Statistic
+                title="Inactivos"
+                value={
+                  equipos.filter((e) => e.estatus_del_equipo === "inactivo")
+                    .length
+                }
+                valueStyle={{ color: "#faad14", fontSize: "24px" }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <Card size="small" className="stat-card-mini">
+              <Statistic
+                title="Pendientes"
+                value={
+                  equipos.filter((e) => e.estatus_del_equipo === "pendiente")
+                    .length
+                }
+                valueStyle={{ color: "#722ed1", fontSize: "24px" }}
+              />
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Tabla de equipos */}
+        <Card
+          title={
+            <Space>
+              <TeamOutlined />
+              <Title level={4} style={{ margin: 0 }}>
+                Lista de Equipos
+              </Title>
+            </Space>
+          }
+          extra={
+            <Space>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={loadEquipos}
+                loading={loading}
+                size="small"
+              >
+                Actualizar
+              </Button>
+              <Button type="primary" icon={<PlusOutlined />} size="small">
+                Nuevo Equipo
+              </Button>
+            </Space>
+          }
+          className="equipos-table-card-embedded"
+        >
+          <Table
+            className="equipos-table"
+            columns={columns}
+            dataSource={equipos}
+            rowKey="id"
+            loading={loading}
+            pagination={{
+              pageSize: 10,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total, range) =>
+                `${range[0]}-${range[1]} de ${total} equipos`,
+            }}
+            scroll={{ x: 1200 }}
+            locale={{
+              emptyText: (
+                <Empty
+                  className="equipos-table-empty"
+                  description="No hay equipos registrados"
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              ),
+            }}
+          />
+        </Card>
+      </div>
     );
   }
 

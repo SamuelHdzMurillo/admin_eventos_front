@@ -30,6 +30,8 @@ import {
   InputNumber,
   Button as AntButton,
   Switch,
+  Breadcrumb,
+  Divider,
 } from "antd";
 import {
   UserOutlined,
@@ -55,6 +57,8 @@ import {
   SafetyOutlined,
   AlertOutlined,
   BarChartOutlined,
+  HomeOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import "./Dashboard.css";
 import { eventosService } from "../services/eventos";
@@ -1013,6 +1017,123 @@ const ParticipantesTable: React.FC = () => {
 
 const { Title, Text } = Typography;
 
+// Componente de Breadcrumb personalizado
+const DashboardBreadcrumb: React.FC<{
+  selectedKey: string;
+  equipoName?: string;
+}> = ({ selectedKey, equipoName }) => {
+  const navigate = useNavigate();
+
+  const getBreadcrumbItems = () => {
+    const items = [
+      {
+        title: (
+          <Button
+            type="link"
+            icon={<HomeOutlined />}
+            onClick={() => navigate("/dashboard")}
+            style={{ padding: 0, height: "auto" }}
+          >
+            Dashboard
+          </Button>
+        ),
+      },
+    ];
+
+    switch (selectedKey) {
+      case "dashboard":
+        return items;
+      case "events":
+        items.push({
+          title: (
+            <Space>
+              <CalendarOutlined />
+              <Text strong>Gestión de Eventos</Text>
+            </Space>
+          ),
+        });
+        break;
+      case "equipos":
+        items.push({
+          title: (
+            <Space>
+              <TeamOutlined />
+              <Text strong>Gestión de Equipos</Text>
+            </Space>
+          ),
+        });
+        break;
+      case "equipo-detalle":
+        items.push(
+          {
+            title: (
+              <Button
+                type="link"
+                icon={<TeamOutlined />}
+                onClick={() => navigate("/dashboard?tab=equipos")}
+                style={{ padding: 0, height: "auto" }}
+              >
+                Equipos
+              </Button>
+            ),
+          },
+          {
+            title: (
+              <Space>
+                <EyeOutlined />
+                <Text strong>{equipoName || "Detalle del Equipo"}</Text>
+              </Space>
+            ),
+          }
+        );
+        break;
+      case "participants":
+        items.push({
+          title: (
+            <Space>
+              <UserOutlined />
+              <Text strong>Participantes</Text>
+            </Space>
+          ),
+        });
+        break;
+      case "revenue":
+        items.push({
+          title: (
+            <Space>
+              <DollarOutlined />
+              <Text strong>Reportes de Ingresos</Text>
+            </Space>
+          ),
+        });
+        break;
+      case "settings":
+        items.push({
+          title: (
+            <Space>
+              <SettingOutlined />
+              <Text strong>Configuración</Text>
+            </Space>
+          ),
+        });
+        break;
+    }
+
+    return items;
+  };
+
+  return (
+    <div className="dashboard-breadcrumb">
+      <Breadcrumb
+        items={getBreadcrumbItems()}
+        separator={
+          <RightOutlined style={{ fontSize: "12px", color: "#8c8c8c" }} />
+        }
+      />
+    </div>
+  );
+};
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -1020,6 +1141,7 @@ const Dashboard: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false);
   const [selectedEquipoId, setSelectedEquipoId] = useState<number | null>(null);
+  const [selectedEquipoName, setSelectedEquipoName] = useState<string>("");
 
   // Estados para estadísticas dinámicas
   const [participantes, setParticipantes] = useState<
@@ -1184,7 +1306,7 @@ const Dashboard: React.FC = () => {
     },
     {
       key: "participants",
-      icon: <TeamOutlined />,
+      icon: <UserOutlined />,
       label: "Participantes",
     },
     {
@@ -1211,7 +1333,9 @@ const Dashboard: React.FC = () => {
   };
 
   const handleEquipoSelect = (equipoId: number) => {
+    const equipo = equipos.find((e) => e.id === equipoId);
     setSelectedEquipoId(equipoId);
+    setSelectedEquipoName(equipo?.nombre_equipo || "");
     setSelectedKey("equipo-detalle");
     navigate(`/dashboard?tab=equipo-detalle&equipo=${equipoId}`);
   };
@@ -1222,6 +1346,48 @@ const Dashboard: React.FC = () => {
 
   const toggleMobileDrawer = () => {
     setMobileDrawerVisible(!mobileDrawerVisible);
+  };
+
+  const getPageTitle = () => {
+    switch (selectedKey) {
+      case "dashboard":
+        return "Dashboard General";
+      case "events":
+        return "Gestión de Eventos";
+      case "equipos":
+        return "Gestión de Equipos";
+      case "equipo-detalle":
+        return `Detalle del Equipo: ${selectedEquipoName}`;
+      case "participants":
+        return "Gestión de Participantes";
+      case "revenue":
+        return "Reportes de Ingresos";
+      case "settings":
+        return "Configuración del Sistema";
+      default:
+        return "Dashboard";
+    }
+  };
+
+  const getPageIcon = () => {
+    switch (selectedKey) {
+      case "dashboard":
+        return <DashboardOutlined />;
+      case "events":
+        return <CalendarOutlined />;
+      case "equipos":
+        return <TeamOutlined />;
+      case "equipo-detalle":
+        return <EyeOutlined />;
+      case "participants":
+        return <UserOutlined />;
+      case "revenue":
+        return <DollarOutlined />;
+      case "settings":
+        return <SettingOutlined />;
+      default:
+        return <DashboardOutlined />;
+    }
   };
 
   return (
@@ -1283,13 +1449,7 @@ const Dashboard: React.FC = () => {
 
           <div className="header-content">
             <Title level={3} className="page-title">
-              {selectedKey === "dashboard" && "Dashboard"}
-              {selectedKey === "events" && "Gestión de Eventos"}
-              {selectedKey === "equipos" && "Gestión de Equipos"}
-              {selectedKey === "equipo-detalle" && "Detalle de Equipo"}
-              {selectedKey === "participants" && "Participantes"}
-              {selectedKey === "revenue" && "Reportes de Ingresos"}
-              {selectedKey === "settings" && "Configuración"}
+              {getPageTitle()}
             </Title>
           </div>
 
@@ -1298,6 +1458,14 @@ const Dashboard: React.FC = () => {
 
         {/* Contenido principal */}
         <Layout.Content className="dashboard-main">
+          {/* Breadcrumb */}
+          <div className="dashboard-breadcrumb-container">
+            <DashboardBreadcrumb
+              selectedKey={selectedKey}
+              equipoName={selectedEquipoName}
+            />
+          </div>
+
           {selectedKey === "dashboard" && (
             <div className="dashboard-content-wrapper">
               <Card title="Dashboard General" className="content-card">
