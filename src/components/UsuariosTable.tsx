@@ -18,6 +18,7 @@ import {
   Avatar,
   Tooltip,
   Badge,
+  Spin,
 } from "antd";
 import {
   UserOutlined,
@@ -28,6 +29,7 @@ import {
   CrownOutlined,
   UserSwitchOutlined,
   ExclamationCircleOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
 import { usuariosService } from "../services/usuarios";
 import type {
@@ -51,6 +53,7 @@ const UsuariosTable: React.FC<UsuariosTableProps> = ({
 }) => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingStats, setLoadingStats] = useState(false);
   const [stats, setStats] = useState<UsuarioStats>({
     total_users: 0,
     admin_users: 0,
@@ -76,15 +79,21 @@ const UsuariosTable: React.FC<UsuariosTableProps> = ({
 
   useEffect(() => {
     loadUsuarios();
-    loadStats();
   }, []);
+
+  // Calcular estadísticas cuando cambien los usuarios
+  useEffect(() => {
+    loadStats();
+  }, [usuarios]);
 
   const loadUsuarios = async () => {
     try {
       setLoading(true);
       const response = await usuariosService.listUsuarios();
+      console.log("Respuesta del servicio de usuarios:", response);
       setUsuarios(response.data || []);
     } catch (error: any) {
+      console.error("Error cargando usuarios:", error);
       message.error(error?.message || "No se pudo cargar la lista de usuarios");
     } finally {
       setLoading(false);
@@ -93,10 +102,38 @@ const UsuariosTable: React.FC<UsuariosTableProps> = ({
 
   const loadStats = async () => {
     try {
-      const response = await usuariosService.getStats();
-      setStats(response.data);
+      setLoadingStats(true);
+      // Calcular estadísticas localmente basándose en los usuarios cargados
+      const totalUsers = usuarios.length;
+      const adminUsers = usuarios.filter(
+        (user) => user.role === "admin"
+      ).length;
+      const regularUsers = usuarios.filter(
+        (user) => user.role === "usuario"
+      ).length;
+
+      console.log("Usuarios cargados:", usuarios);
+      console.log("Estadísticas calculadas:", {
+        total_users: totalUsers,
+        admin_users: adminUsers,
+        regular_users: regularUsers,
+      });
+
+      setStats({
+        total_users: totalUsers,
+        admin_users: adminUsers,
+        regular_users: regularUsers,
+      });
     } catch (error: any) {
-      console.error("Error loading stats:", error);
+      console.error("Error calculating stats:", error);
+      // Establecer valores por defecto en caso de error
+      setStats({
+        total_users: 0,
+        admin_users: 0,
+        regular_users: 0,
+      });
+    } finally {
+      setLoadingStats(false);
     }
   };
 
@@ -317,18 +354,40 @@ const UsuariosTable: React.FC<UsuariosTableProps> = ({
 
       {/* Estadísticas */}
       <Row gutter={[16, 16]} className="usuarios-stats-row">
-        {statsCards.map((stat, index) => (
-          <Col xs={24} sm={8} key={index}>
+        {loadingStats ? (
+          <Col span={24}>
+            <div style={{ textAlign: "center", padding: "20px" }}>
+              <Spin size="large" />
+              <Text style={{ display: "block", marginTop: "12px" }}>
+                Calculando estadísticas...
+              </Text>
+            </div>
+          </Col>
+        ) : usuarios.length === 0 && !loading ? (
+          <Col span={24}>
             <Card className="usuarios-stats-card">
-              <Statistic
-                title={stat.title}
-                value={stat.value}
-                prefix={stat.prefix}
-                valueStyle={{ color: stat.color }}
-              />
+              <div style={{ textAlign: "center", padding: "20px" }}>
+                <Text type="secondary">
+                  No hay usuarios registrados. Las estadísticas se mostrarán
+                  cuando se agreguen usuarios.
+                </Text>
+              </div>
             </Card>
           </Col>
-        ))}
+        ) : (
+          statsCards.map((stat, index) => (
+            <Col xs={24} sm={8} key={index}>
+              <Card className="usuarios-stats-card">
+                <Statistic
+                  title={stat.title}
+                  value={stat.value}
+                  prefix={stat.prefix}
+                  valueStyle={{ color: stat.color }}
+                />
+              </Card>
+            </Col>
+          ))
+        )}
       </Row>
 
       {/* Tabla de usuarios */}
@@ -336,13 +395,26 @@ const UsuariosTable: React.FC<UsuariosTableProps> = ({
         title="Lista de Usuarios"
         className="usuarios-table-card"
         extra={
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setCreateModalVisible(true)}
-          >
-            Nuevo Usuario
-          </Button>
+          <Space>
+            <Button
+              icon={<ReloadOutlined />}
+              onClick={() => {
+                loadUsuarios();
+                loadStats();
+              }}
+              loading={loading || loadingStats}
+              size="small"
+            >
+              Actualizar
+            </Button>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setCreateModalVisible(true)}
+            >
+              Nuevo Usuario
+            </Button>
+          </Space>
         }
       >
         <Table
