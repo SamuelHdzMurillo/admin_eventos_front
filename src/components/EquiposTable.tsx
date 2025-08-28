@@ -28,9 +28,13 @@ const { Text, Title } = Typography;
 
 interface EquiposTableProps {
   onEquipoSelect?: (equipoId: number) => void;
+  isEmbedded?: boolean; // Nueva prop para indicar si está embebido en el dashboard
 }
 
-const EquiposTable: React.FC<EquiposTableProps> = ({ onEquipoSelect }) => {
+const EquiposTable: React.FC<EquiposTableProps> = ({
+  onEquipoSelect,
+  isEmbedded = false,
+}) => {
   const navigate = useNavigate();
   const [equipos, setEquipos] = useState<Equipo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -155,6 +159,36 @@ const EquiposTable: React.FC<EquiposTableProps> = ({ onEquipoSelect }) => {
       ),
     },
   ];
+
+  // Si está embebido en el dashboard, mostrar solo la tabla sin el card contenedor
+  if (isEmbedded) {
+    return (
+      <Table
+        className="equipos-table"
+        columns={columns}
+        dataSource={equipos}
+        rowKey="id"
+        loading={loading}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} de ${total} equipos`,
+        }}
+        scroll={{ x: 1200 }}
+        locale={{
+          emptyText: (
+            <Empty
+              className="equipos-table-empty"
+              description="No hay equipos registrados"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          ),
+        }}
+      />
+    );
+  }
 
   return (
     <div className="equipos-table-container">

@@ -1143,3 +1143,152 @@
     padding: 6px 8px;
   }
 }
+
+/* Estilos optimizados para la tabla de equipos en el dashboard */
+.equipos-table {
+  /* Eliminar altura máxima y scroll vertical forzado */
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.equipos-table .ant-table-body {
+  /* Eliminar altura máxima y scroll vertical forzado */
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Estilos específicos para tabla compacta y flexible */
+.equipos-table .ant-table {
+  font-size: 12px;
+  /* Asegurar que la tabla se ajuste al contenedor */
+  width: 100%;
+  table-layout: auto;
+}
+
+.equipos-table .ant-table-thead > tr > th {
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  /* Evitar que las columnas se compriman demasiado */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.equipos-table .ant-table-tbody > tr > td {
+  padding: 6px 8px;
+  font-size: 11px;
+  border-bottom: 1px solid #f5f5f5;
+  /* Permitir que el contenido se ajuste */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hacer la tabla más compacta y flexible */
+.equipos-table .ant-table-container {
+  border-radius: 6px;
+  /* Eliminar cualquier overflow innecesario */
+  overflow: visible;
+}
+
+/* Reducir el tamaño de los avatares en la tabla */
+.equipos-table .ant-avatar {
+  width: 16px !important;
+  height: 16px !important;
+  font-size: 8px !important;
+}
+
+.equipos-table .ant-tag {
+  font-size: 9px;
+  height: 16px;
+  line-height: 14px;
+  padding: 0 4px;
+}
+
+/* Optimizar el scroll horizontal solo cuando sea necesario */
+.equipos-table .ant-table-wrapper {
+  overflow-x: auto;
+  /* Eliminar scroll vertical innecesario */
+  overflow-y: visible;
+}
+
+.equipos-table .ant-table-body {
+  /* Configurar scroll horizontal suave */
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+/* Mejorar el scrollbar horizontal */
+.equipos-table .ant-table-body::-webkit-scrollbar {
+  height: 6px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.equipos-table .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Estilos específicos para tabla embebida en dashboard */
+.dashboard-content-wrapper .equipos-table {
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-table-wrapper {
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-table {
+  border-radius: 0;
+  border: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-table-tbody > tr:hover > td {
+  background: #f8f9fa;
+  transform: none;
+  box-shadow: none;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-avatar {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 10px !important;
+}
+
+.dashboard-content-wrapper .equipos-table .ant-tag {
+  font-size: 11px;
+  height: 18px;
+  line-height: 16px;
+  padding: 0 6px;
+}

@@ -1632,7 +1632,10 @@ const Dashboard: React.FC = () => {
 
           {selectedKey === "equipos" && (
             <div className="dashboard-content-wrapper">
-              <EquiposTable onEquipoSelect={handleEquipoSelect} />
+              <EquiposTable
+                onEquipoSelect={handleEquipoSelect}
+                isEmbedded={true}
+              />
             </div>
           )}
 
