@@ -66,6 +66,7 @@ import type { Evento, Equipo, Participante } from "../services/eventos";
 import dayjs from "dayjs";
 import EquiposTable from "../components/EquiposTable";
 import EquipoDetalle from "./EquipoDetalle";
+import UsuariosTable from "../components/UsuariosTable";
 
 const EventSelector: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
@@ -1141,6 +1142,16 @@ const DashboardBreadcrumb: React.FC<{
           }
         );
         break;
+      case "usuarios":
+        items.push({
+          title: (
+            <Space>
+              <UserOutlined />
+              <Text strong>Gestión de Usuarios</Text>
+            </Space>
+          ),
+        });
+        break;
       case "revenue":
         items.push({
           title: (
@@ -1359,6 +1370,11 @@ const Dashboard: React.FC = () => {
           label: "Participantes",
         },
       ],
+    },
+    {
+      key: "usuarios",
+      icon: <UserOutlined />,
+      label: "Usuarios",
     },
     {
       key: "revenue",
@@ -1883,6 +1899,12 @@ const Dashboard: React.FC = () => {
           {selectedKey === "participants" && (
             <div className="dashboard-content-wrapper">
               <ParticipantesTable />
+            </div>
+          )}
+
+          {selectedKey === "usuarios" && (
+            <div className="dashboard-content-wrapper">
+              <UsuariosTable isEmbedded={true} />
             </div>
           )}
 
