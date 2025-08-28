@@ -572,14 +572,9 @@ const EquipoDetalle: React.FC<EquipoDetalleProps> = ({
                 key: "tipo_sangre_participante",
               },
               {
-                title: "Alérgico",
-                dataIndex: "alergico",
-                key: "alergico",
-                render: (value: boolean) => (
-                  <Tag color={value ? "error" : "success"}>
-                    {value ? "Sí" : "No"}
-                  </Tag>
-                ),
+                title: "Talla",
+                dataIndex: "talla_participante",
+                key: "talla_participante",
               },
               {
                 title: "Acciones",
