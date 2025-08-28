@@ -1300,44 +1300,50 @@ const Dashboard: React.FC = () => {
         <Layout.Content className="dashboard-main">
           {selectedKey === "dashboard" && (
             <div className="dashboard-content-wrapper">
-              {/* Estadísticas principales */}
-              <Row gutter={[16, 16]} className="stats-row">
-                {loadingStats ? (
-                  <Col span={24}>
-                    <Card
-                      className="stat-card"
-                      style={{ textAlign: "center", padding: "40px" }}
-                    >
-                      <Spin size="large" />
-                      <Text style={{ display: "block", marginTop: "16px" }}>
-                        Cargando estadísticas del dashboard...
-                      </Text>
-                    </Card>
-                  </Col>
-                ) : (
-                  dashboardStats.map((stat, index) => (
-                    <Col xs={24} sm={12} lg={6} key={index}>
-                      <Card
-                        className="stat-card"
-                        hoverable
-                        data-stat={stat.statType}
-                      >
-                        <Statistic
-                          title={stat.title}
-                          value={stat.value}
-                          prefix={stat.prefix}
-                          suffix={stat.suffix}
-                          valueStyle={{ color: stat.color }}
-                        />
-                      </Card>
-                    </Col>
-                  ))
-                )}
-              </Row>
+              <Card title="Dashboard General" className="content-card">
+                <Space
+                  direction="vertical"
+                  size="large"
+                  style={{ width: "100%" }}
+                >
+                  {/* Estadísticas principales */}
+                  <Card title="Estadísticas Generales" size="small">
+                    <Row gutter={[16, 16]} className="stats-row">
+                      {loadingStats ? (
+                        <Col span={24}>
+                          <div style={{ textAlign: "center", padding: "20px" }}>
+                            <Spin size="large" />
+                            <Text
+                              style={{ display: "block", marginTop: "12px" }}
+                            >
+                              Cargando estadísticas...
+                            </Text>
+                          </div>
+                        </Col>
+                      ) : (
+                        dashboardStats.map((stat, index) => (
+                          <Col xs={24} sm={12} lg={6} key={index}>
+                            <Card
+                              className="stat-card"
+                              hoverable
+                              data-stat={stat.statType}
+                              size="small"
+                            >
+                              <Statistic
+                                title={stat.title}
+                                value={stat.value}
+                                prefix={stat.prefix}
+                                suffix={stat.suffix}
+                                valueStyle={{ color: stat.color }}
+                              />
+                            </Card>
+                          </Col>
+                        ))
+                      )}
+                    </Row>
+                  </Card>
 
-              {/* Sección de Equipos */}
-              <Row gutter={[16, 16]} className="main-content">
-                <Col xs={24}>
+                  {/* Sección de Equipos */}
                   <Card
                     title={
                       <Space>
@@ -1350,16 +1356,18 @@ const Dashboard: React.FC = () => {
                         type="link"
                         icon={<EyeOutlined />}
                         onClick={() => setSelectedKey("equipos")}
+                        size="small"
                       >
                         Ver todos
                       </Button>
                     }
-                    className="equipos-section-card"
+                    size="small"
                   >
                     {equipos.length === 0 ? (
                       <Empty
                         description="No hay equipos registrados"
                         image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        style={{ padding: "20px" }}
                       />
                     ) : (
                       <Table
@@ -1423,150 +1431,187 @@ const Dashboard: React.FC = () => {
                       </Table>
                     )}
                   </Card>
-                </Col>
-              </Row>
 
-              {/* Sección de Estadísticas Detalladas */}
-              <Row gutter={[12, 12]} className="stats-detail-section">
-                <Col xs={24}>
-                  <Title level={4} className="section-title">
-                    <BarChartOutlined style={{ marginRight: 8 }} />
-                    Estadísticas Detalladas
-                  </Title>
-                </Col>
+                  {/* Estadísticas Detalladas */}
+                  <Card title="Estadísticas Detalladas" size="small">
+                    <Row gutter={[12, 12]} className="stats-detail-section">
+                      {/* Participantes por entidad federativa */}
+                      <Col xs={24} lg={12}>
+                        <Card
+                          title={
+                            <Space size="small">
+                              <EnvironmentOutlined
+                                style={{ color: "#1890ff" }}
+                              />
+                              <span style={{ fontSize: "12px" }}>
+                                Por Entidad Federativa
+                              </span>
+                            </Space>
+                          }
+                          className="chart-card"
+                          size="small"
+                        >
+                          {Object.entries(stats.participantesPorEntidad)
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 5)
+                            .map(([entidad, count], index) => (
+                              <div key={index} className="participant-item">
+                                <div className="participant-info">
+                                  <Text strong style={{ fontSize: "11px" }}>
+                                    {entidad}
+                                  </Text>
+                                  <Text
+                                    type="secondary"
+                                    style={{ fontSize: "10px" }}
+                                  >
+                                    {count} participantes
+                                  </Text>
+                                </div>
+                                <Progress
+                                  percent={Math.round(
+                                    (count / stats.totalParticipantes) * 100
+                                  )}
+                                  strokeColor="#1890ff"
+                                  showInfo={false}
+                                  size="small"
+                                />
+                              </div>
+                            ))}
+                        </Card>
+                      </Col>
 
-                {/* Participantes por entidad federativa */}
-                <Col xs={24} lg={12}>
-                  <Card
-                    title={
-                      <Space>
-                        <EnvironmentOutlined style={{ color: "#1890ff" }} />
-                        <span>Participantes por Entidad Federativa</span>
-                      </Space>
-                    }
-                    className="chart-card"
-                  >
-                    {Object.entries(stats.participantesPorEntidad)
-                      .sort(([, a], [, b]) => b - a)
-                      .slice(0, 6)
-                      .map(([entidad, count], index) => (
-                        <div key={index} className="participant-item">
-                          <div className="participant-info">
-                            <Text strong>{entidad}</Text>
-                            <Text type="secondary">{count} participantes</Text>
-                          </div>
-                          <Progress
-                            percent={Math.round(
-                              (count / stats.totalParticipantes) * 100
-                            )}
-                            strokeColor="#1890ff"
-                            showInfo={false}
-                            size="small"
-                          />
-                        </div>
-                      ))}
+                      {/* Especialidades más populares */}
+                      <Col xs={24} lg={12}>
+                        <Card
+                          title={
+                            <Space size="small">
+                              <TrophyOutlined style={{ color: "#52c41a" }} />
+                              <span style={{ fontSize: "12px" }}>
+                                Especialidades Populares
+                              </span>
+                            </Space>
+                          }
+                          className="chart-card"
+                          size="small"
+                        >
+                          {Object.entries(stats.especialidades)
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 5)
+                            .map(([especialidad, count], index) => (
+                              <div key={index} className="participant-item">
+                                <div className="participant-info">
+                                  <Text strong style={{ fontSize: "11px" }}>
+                                    {especialidad}
+                                  </Text>
+                                  <Text
+                                    type="secondary"
+                                    style={{ fontSize: "10px" }}
+                                  >
+                                    {count} participantes
+                                  </Text>
+                                </div>
+                                <Progress
+                                  percent={Math.round(
+                                    (count / stats.totalParticipantes) * 100
+                                  )}
+                                  strokeColor="#52c41a"
+                                  showInfo={false}
+                                  size="small"
+                                />
+                              </div>
+                            ))}
+                        </Card>
+                      </Col>
+
+                      {/* Distribución por tipo de sangre */}
+                      <Col xs={24} lg={12}>
+                        <Card
+                          title={
+                            <Space size="small">
+                              <HeartOutlined style={{ color: "#ff4d4f" }} />
+                              <span style={{ fontSize: "12px" }}>
+                                Tipos de Sangre
+                              </span>
+                            </Space>
+                          }
+                          className="chart-card"
+                          size="small"
+                        >
+                          {Object.entries(stats.tiposSangre)
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 5)
+                            .map(([tipo, count], index) => (
+                              <div key={index} className="participant-item">
+                                <div className="participant-info">
+                                  <Text strong style={{ fontSize: "11px" }}>
+                                    {tipo}
+                                  </Text>
+                                  <Text
+                                    type="secondary"
+                                    style={{ fontSize: "10px" }}
+                                  >
+                                    {count} participantes
+                                  </Text>
+                                </div>
+                                <Progress
+                                  percent={Math.round(
+                                    (count / stats.totalParticipantes) * 100
+                                  )}
+                                  strokeColor="#ff4d4f"
+                                  showInfo={false}
+                                  size="small"
+                                />
+                              </div>
+                            ))}
+                        </Card>
+                      </Col>
+
+                      {/* Distribución por semestre */}
+                      <Col xs={24} lg={12}>
+                        <Card
+                          title={
+                            <Space size="small">
+                              <CalendarOutlined style={{ color: "#722ed1" }} />
+                              <span style={{ fontSize: "12px" }}>
+                                Por Semestre
+                              </span>
+                            </Space>
+                          }
+                          className="chart-card"
+                          size="small"
+                        >
+                          {Object.entries(stats.semestres)
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 5)
+                            .map(([semestre, count], index) => (
+                              <div key={index} className="participant-item">
+                                <div className="participant-info">
+                                  <Text strong style={{ fontSize: "11px" }}>
+                                    {semestre}
+                                  </Text>
+                                  <Text
+                                    type="secondary"
+                                    style={{ fontSize: "10px" }}
+                                  >
+                                    {count} participantes
+                                  </Text>
+                                </div>
+                                <Progress
+                                  percent={Math.round(
+                                    (count / stats.totalParticipantes) * 100
+                                  )}
+                                  strokeColor="#722ed1"
+                                  showInfo={false}
+                                  size="small"
+                                />
+                              </div>
+                            ))}
+                        </Card>
+                      </Col>
+                    </Row>
                   </Card>
-                </Col>
-
-                {/* Especialidades más populares */}
-                <Col xs={24} lg={12}>
-                  <Card
-                    title={
-                      <Space>
-                        <TrophyOutlined style={{ color: "#52c41a" }} />
-                        <span>Especialidades Más Populares</span>
-                      </Space>
-                    }
-                    className="chart-card"
-                  >
-                    {Object.entries(stats.especialidades)
-                      .sort(([, a], [, b]) => b - a)
-                      .slice(0, 6)
-                      .map(([especialidad, count], index) => (
-                        <div key={index} className="participant-item">
-                          <div className="participant-info">
-                            <Text strong>{especialidad}</Text>
-                            <Text type="secondary">{count} participantes</Text>
-                          </div>
-                          <Progress
-                            percent={Math.round(
-                              (count / stats.totalParticipantes) * 100
-                            )}
-                            strokeColor="#52c41a"
-                            showInfo={false}
-                            size="small"
-                          />
-                        </div>
-                      ))}
-                  </Card>
-                </Col>
-
-                {/* Distribución por tipo de sangre */}
-                <Col xs={24} lg={12}>
-                  <Card
-                    title={
-                      <Space>
-                        <HeartOutlined style={{ color: "#ff4d4f" }} />
-                        <span>Distribución por Tipo de Sangre</span>
-                      </Space>
-                    }
-                    className="chart-card"
-                  >
-                    {Object.entries(stats.tiposSangre)
-                      .sort(([, a], [, b]) => b - a)
-                      .slice(0, 6)
-                      .map(([tipo, count], index) => (
-                        <div key={index} className="participant-item">
-                          <div className="participant-info">
-                            <Text strong>{tipo}</Text>
-                            <Text type="secondary">{count} participantes</Text>
-                          </div>
-                          <Progress
-                            percent={Math.round(
-                              (count / stats.totalParticipantes) * 100
-                            )}
-                            strokeColor="#ff4d4f"
-                            showInfo={false}
-                            size="small"
-                          />
-                        </div>
-                      ))}
-                  </Card>
-                </Col>
-
-                {/* Distribución por semestre */}
-                <Col xs={24} lg={12}>
-                  <Card
-                    title={
-                      <Space>
-                        <CalendarOutlined style={{ color: "#722ed1" }} />
-                        <span>Distribución por Semestre</span>
-                      </Space>
-                    }
-                    className="chart-card"
-                  >
-                    {Object.entries(stats.semestres)
-                      .sort(([, a], [, b]) => b - a)
-                      .slice(0, 6)
-                      .map(([semestre, count], index) => (
-                        <div key={index} className="participant-item">
-                          <div className="participant-info">
-                            <Text strong>{semestre}</Text>
-                            <Text type="secondary">{count} participantes</Text>
-                          </div>
-                          <Progress
-                            percent={Math.round(
-                              (count / stats.totalParticipantes) * 100
-                            )}
-                            strokeColor="#722ed1"
-                            showInfo={false}
-                            size="small"
-                          />
-                        </div>
-                      ))}
-                  </Card>
-                </Col>
-              </Row>
+                </Space>
+              </Card>
             </div>
           )}
 

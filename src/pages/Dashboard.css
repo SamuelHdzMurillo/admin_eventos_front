@@ -953,29 +953,39 @@
   padding: 8px;
 }
 
-/* Estilos para la sección de equipos */
-.equipos-section-card {
-  margin-bottom: 8px;
+/* Estilos para el contenedor principal del dashboard */
+.dashboard-content-wrapper .content-card {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.equipos-section-card .ant-card-head {
-  border-bottom: 1px solid #f0f0f0;
+.dashboard-content-wrapper .content-card .ant-card-head {
   background: #fafafa;
-  padding: 6px 12px;
-  min-height: 40px;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
 }
 
-.equipos-section-card .ant-card-head-title {
-  font-size: 14px;
-  line-height: 1.2;
+.dashboard-content-wrapper .content-card .ant-card-body {
+  padding: 16px;
 }
 
-.equipos-section-card .ant-card-body {
-  padding: 8px;
+/* Estilos para las tarjetas de estadísticas dentro del contenedor */
+.dashboard-content-wrapper .stat-card {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid #e8e8e8;
 }
 
+.dashboard-content-wrapper .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content-wrapper .stat-card .ant-card-body {
+  padding: 12px;
+}
+
+/* Estilos para la tabla de equipos */
 .equipos-table {
   margin-top: 4px;
   max-height: 200px;
@@ -993,10 +1003,10 @@
 }
 
 .equipos-table .ant-table-thead > tr > th {
-  background: #fafafa;
-  font-weight: 600;
   padding: 4px 6px;
   font-size: 11px;
+  font-weight: 600;
+  background: #fafafa;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -1006,10 +1016,6 @@
   border-bottom: 1px solid #f5f5f5;
 }
 
-.equipos-table .ant-table-tbody > tr:hover > td {
-  background: #f5f5f5;
-}
-
 /* Hacer la tabla más compacta y flexible */
 .equipos-table .ant-table-container {
   border-radius: 6px;
@@ -1017,46 +1023,21 @@
 
 /* Reducir el tamaño de los avatares en la tabla */
 .equipos-table .ant-avatar {
-  width: 20px !important;
-  height: 20px !important;
-  font-size: 10px !important;
+  width: 16px !important;
+  height: 16px !important;
+  font-size: 8px !important;
 }
 
-/* Optimizar el espacio de las columnas */
-.equipos-table .ant-table-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Reducir el tamaño de los tags */
 .equipos-table .ant-tag {
-  font-size: 10px;
+  font-size: 9px;
+  height: 16px;
+  line-height: 14px;
   padding: 0 4px;
-  line-height: 16px;
-  height: 18px;
 }
 
-/* Estilos para la sección de estadísticas detalladas */
-.stats-detail-section {
-  margin-top: 8px;
-}
-
-.section-title {
-  margin-bottom: 8px !important;
-  color: #262626;
-  font-weight: 600;
-  border-left: 3px solid #1890ff;
-  padding-left: 8px;
-  background: #fafafa;
-  padding: 6px 10px;
-  border-radius: 0 4px 4px 0;
-  font-size: 14px !important;
-}
-
-/* Mejoras en las tarjetas de estadísticas */
+/* Estilos para las tarjetas de estadísticas detalladas */
 .chart-card {
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease;
 }
@@ -1069,12 +1050,13 @@
   border-bottom: 1px solid #f0f0f0;
   background: #fafafa;
   padding: 8px 12px;
+  min-height: 36px;
 }
 
 .chart-card .ant-card-head-title {
   font-weight: 600;
   color: #262626;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .chart-card .ant-card-body {
@@ -1094,11 +1076,32 @@
 .participant-item:hover {
   background: #f0f8ff;
   border-color: #1890ff;
+  transform: translateX(2px);
 }
 
-/* Optimización adicional de espaciados */
+.participant-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+/* Estilos para el título de sección */
+.section-title {
+  font-size: 14px !important;
+  margin-bottom: 8px !important;
+  color: #262626;
+  font-weight: 600;
+  border-left: 3px solid #1890ff;
+  padding-left: 8px;
+  background: #fafafa;
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Optimización de espaciados */
 .stats-row {
-  margin-bottom: 12px !important;
+  margin-bottom: 8px !important;
 }
 
 .main-content {
@@ -1111,106 +1114,32 @@
 
 /* Reducir espaciado en las columnas */
 .stats-row .ant-col {
-  padding: 0 8px !important;
-}
-
-.main-content .ant-col {
-  padding: 0 8px !important;
-}
-
-.stats-detail-section .ant-col {
   padding: 0 6px !important;
 }
 
-/* Reducir espaciado en el contenido principal */
-.dashboard-main {
-  padding: 8px;
+.main-content .ant-col {
+  padding: 0 6px !important;
 }
 
-/* Optimizar espaciado en elementos de participantes */
-.participant-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2px;
+.stats-detail-section .ant-col {
+  padding: 0 4px !important;
 }
 
-.participant-info .ant-typography {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.participant-info .ant-typography-strong {
-  color: #1a1a1a;
-}
-
-.participant-info .ant-typography-secondary {
-  color: #666;
-  font-size: 11px;
-}
-
-/* Reducir espaciado en barras de progreso */
-.chart-card .ant-progress {
-  margin-bottom: 0;
-}
-
-.chart-card .ant-progress-line {
-  margin-bottom: 0;
-}
-
-/* Hacer la tabla responsive */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .equipos-table .ant-table-thead > tr > th,
-  .equipos-table .ant-table-tbody > tr > td {
-    padding: 3px 4px;
-    font-size: 10px;
+  .dashboard-content-wrapper {
+    padding: 4px;
   }
 
-  .equipos-table .ant-avatar {
-    width: 16px !important;
-    height: 16px !important;
-    font-size: 8px !important;
+  .dashboard-content-wrapper .content-card .ant-card-body {
+    padding: 12px;
   }
 
-  .equipos-table .ant-tag {
-    font-size: 9px;
-    padding: 0 3px;
-    line-height: 14px;
-    height: 16px;
-  }
-
-  .section-title {
-    font-size: 14px !important;
-    padding: 6px 8px;
-  }
-
-  .chart-card .ant-card-head {
-    padding: 8px 12px;
+  .stats-row .ant-col {
+    padding: 0 4px !important;
   }
 
   .chart-card .ant-card-body {
-    padding: 8px 12px;
-  }
-
-  .participant-item {
     padding: 6px 8px;
-  }
-}
-
-/* Animaciones suaves */
-.chart-card,
-.participant-item {
-  animation: fadeInUp 0.4s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
