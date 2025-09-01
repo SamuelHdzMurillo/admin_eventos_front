@@ -49,7 +49,6 @@ import {
   MenuUnfoldOutlined,
   DashboardOutlined,
   SettingOutlined,
-  LogoutOutlined,
   MenuOutlined,
   EyeOutlined,
   EditOutlined,
@@ -1540,14 +1539,7 @@ const Dashboard: React.FC = () => {
         />
 
         <div className="sidebar-footer">
-          <Button
-            type="text"
-            icon={<LogoutOutlined />}
-            className="logout-btn"
-            onClick={() => console.log("Logout")}
-          >
-            {!collapsed && "Cerrar Sesión"}
-          </Button>
+          {/* Footer del sidebar sin botón de logout */}
         </div>
       </Layout.Sider>
 
