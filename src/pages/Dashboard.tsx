@@ -1351,55 +1351,43 @@ const Dashboard: React.FC = () => {
       type: "divider",
     },
     {
-      type: "group",
-      label: "ADMINISTRACIÓN",
-      children: [
-        {
-          key: "usuarios",
-          icon: <UserOutlined />,
-          label: "Usuarios",
-        },
-        {
-          key: "buzon-asistencia",
-          icon: <MessageOutlined />,
-          label: "Buzón de Asistencia",
-        },
-      ],
+      key: "usuarios",
+      icon: <UserOutlined />,
+      label: "Usuarios",
+    },
+    {
+      key: "buzon-asistencia",
+      icon: <MessageOutlined />,
+      label: "Buzón de Asistencia",
     },
     {
       type: "divider",
     },
     {
-      type: "group",
-      label: "LOGÍSTICA",
+      key: "events",
+      icon: <CalendarOutlined />,
+      label: "Eventos",
+    },
+    {
+      key: "participants",
+      icon: <UserOutlined />,
+      label: "Participantes",
+    },
+    {
+      key: "equipos",
+      icon: <TeamOutlined />,
+      label: "Equipos",
       children: [
         {
-          key: "events",
-          icon: <CalendarOutlined />,
-          label: "Eventos",
-        },
-        {
-          key: "participants",
-          icon: <UserOutlined />,
-          label: "Participantes",
-        },
-        {
-          key: "equipos",
+          key: "equipos-list",
           icon: <TeamOutlined />,
-          label: "Equipos",
-          children: [
-            {
-              key: "equipos-list",
-              icon: <TeamOutlined />,
-              label: "Lista de Equipos",
-            },
-            {
-              key: "equipo-detalle",
-              icon: <EyeOutlined />,
-              label: "Detalle de Equipo",
-              disabled: !selectedEquipoId,
-            },
-          ],
+          label: "Lista de Equipos",
+        },
+        {
+          key: "equipo-detalle",
+          icon: <EyeOutlined />,
+          label: "Detalle de Equipo",
+          disabled: !selectedEquipoId,
         },
       ],
     },
@@ -1407,25 +1395,19 @@ const Dashboard: React.FC = () => {
       type: "divider",
     },
     {
-      type: "group",
-      label: "SITIO PÚBLICO",
-      children: [
-        {
-          key: "restaurantes",
-          icon: <ShopOutlined />,
-          label: "Restaurantes",
-        },
-        {
-          key: "hospedajes",
-          icon: <HomeOutlined />,
-          label: "Hospedajes",
-        },
-        {
-          key: "lugares-interes",
-          icon: <EnvironmentOutlined />,
-          label: "Lugares de Interés",
-        },
-      ],
+      key: "restaurantes",
+      icon: <ShopOutlined />,
+      label: "Restaurantes",
+    },
+    {
+      key: "hospedajes",
+      icon: <HomeOutlined />,
+      label: "Hospedajes",
+    },
+    {
+      key: "lugares-interes",
+      icon: <EnvironmentOutlined />,
+      label: "Lugares de Interés",
     },
   ];
 

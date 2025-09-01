@@ -12,6 +12,8 @@
   top: 0;
   z-index: 1000;
   border-right: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboard-content {
@@ -25,11 +27,12 @@
 
 /* Sidebar */
 .sidebar-header {
-  padding: 20px 16px;
+  padding: 16px 12px;
   border-bottom: 1px solid #e8e8e8;
   text-align: center;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .logo-container {
@@ -63,16 +66,55 @@
   background: transparent;
   border: none;
   margin-top: 20px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+}
+
+/* Scrollbar personalizado para el menú */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+/* Estilos para Firefox */
+.sidebar-menu {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
 }
 
 .sidebar-menu .ant-menu-item {
-  margin: 6px 12px;
-  border-radius: 10px;
-  height: 50px;
-  line-height: 50px;
+  margin: 4px 8px;
+  border-radius: 8px;
+  height: 44px;
+  line-height: 44px;
   color: #5a6c7d;
   font-weight: 500;
   transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+/* Estilos para separadores */
+.sidebar-menu .ant-menu-divider {
+  margin: 8px 16px;
+  border-color: #f0f0f0;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed .sidebar-menu .ant-menu-divider {
+  margin: 8px 8px;
 }
 
 .sidebar-menu .ant-menu-item-selected {
@@ -92,6 +134,8 @@
   font-size: 16px;
   margin-right: 12px;
   transition: all 0.3s ease;
+  min-width: 16px;
+  text-align: center;
 }
 
 .sidebar-menu .ant-menu-item:hover .anticon {
@@ -100,6 +144,18 @@
 
 .sidebar-menu .ant-menu-item-selected .anticon {
   transform: scale(1.1);
+}
+
+/* Estilos para elementos deshabilitados */
+.sidebar-menu .ant-menu-item-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sidebar-menu .ant-menu-item-disabled:hover {
+  background: transparent !important;
+  color: #5a6c7d !important;
+  transform: none !important;
 }
 
 /* Mejoras adicionales para el sidebar */
@@ -134,12 +190,14 @@
 }
 
 .sidebar-footer {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   width: 100%;
-  padding: 20px 16px;
+  padding: 16px 12px;
   border-top: 1px solid #e8e8e8;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .logout-btn {
@@ -1404,13 +1462,15 @@
   background: transparent;
   border: none;
   margin-left: 16px;
+  padding-left: 8px;
+  border-left: 2px solid #f0f0f0;
 }
 
 .sidebar-menu .ant-menu-sub .ant-menu-item {
-  margin: 4px 8px;
-  border-radius: 8px;
-  height: 40px;
-  line-height: 40px;
+  margin: 2px 8px;
+  border-radius: 6px;
+  height: 36px;
+  line-height: 36px;
   color: #5a6c7d;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -1434,6 +1494,8 @@
   font-size: 14px;
   margin-right: 10px;
   transition: all 0.3s ease;
+  min-width: 14px;
+  text-align: center;
 }
 
 .sidebar-menu .ant-menu-sub .ant-menu-item:hover .anticon {
@@ -1449,18 +1511,97 @@
   .sidebar-menu
   .ant-menu-submenu-title {
   padding: 0 16px;
+  text-align: center;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed .sidebar-menu .ant-menu-item {
+  padding: 0 16px;
+  text-align: center;
+  margin: 4px 8px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed
+  .sidebar-menu
+  .ant-menu-item
+  .anticon {
+  margin-right: 0;
+  font-size: 18px;
+  min-width: 18px;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed .logo-container img {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+/* Estilos para tooltips en modo colapsado */
+.dashboard-sider.ant-layout-sider-collapsed .ant-menu-item,
+.dashboard-sider.ant-layout-sider-collapsed .ant-menu-submenu-title {
+  position: relative;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed .ant-menu-item:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1001;
+  margin-left: 8px;
+  pointer-events: none;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed
+  .ant-menu-submenu-title:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1001;
+  margin-left: 8px;
+  pointer-events: none;
 }
 
 .dashboard-sider.ant-layout-sider-collapsed .sidebar-menu .ant-menu-sub {
   margin-left: 0;
+  border-left: none;
+  padding-left: 0;
 }
 
 .dashboard-sider.ant-layout-sider-collapsed
   .sidebar-menu
   .ant-menu-sub
   .ant-menu-item {
-  margin: 2px 4px;
   padding: 0 12px;
+  text-align: center;
+  margin: 2px 4px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.dashboard-sider.ant-layout-sider-collapsed
+  .sidebar-menu
+  .ant-menu-sub
+  .ant-menu-item
+  .anticon {
+  margin-right: 0;
+  min-width: 14px;
+  text-align: center;
 }
 
 /* Responsive para menú jerárquico */
@@ -1469,16 +1610,25 @@
     margin-left: 12px;
   }
 
-  .sidebar-menu .ant-menu-sub .ant-menu-item {
+  .sidebar-menu .ant-menu-item {
     margin: 2px 6px;
-    height: 36px;
-    line-height: 36px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+  }
+
+  .sidebar-menu .ant-menu-sub .ant-menu-item {
+    height: 32px;
+    line-height: 32px;
     font-size: 12px;
   }
 
-  .sidebar-menu .ant-menu-sub .ant-menu-item .anticon {
-    font-size: 12px;
-    margin-right: 8px;
+  .sidebar-header {
+    padding: 12px 8px;
+  }
+
+  .sidebar-footer {
+    padding: 12px 8px;
   }
 }
 
@@ -1521,6 +1671,23 @@
 /* Mejoras visuales para el menú móvil */
 .mobile-menu .ant-menu-submenu {
   background: transparent;
+}
+
+/* Estilos para el drawer móvil */
+.ant-drawer .ant-drawer-body {
+  padding: 0;
+}
+
+.ant-drawer .ant-menu {
+  border: none;
+  background: transparent;
+}
+
+.ant-drawer .ant-menu-item {
+  margin: 4px 8px;
+  border-radius: 8px;
+  height: 44px;
+  line-height: 44px;
 }
 
 .mobile-menu .ant-menu-submenu-title {
