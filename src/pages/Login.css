@@ -48,12 +48,12 @@
 }
 
 .login-input:hover {
-  border-color: #1890ff;
+  border-color: #8b0000;
 }
 
 .login-input:focus {
-  border-color: #1890ff;
-  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.1);
+  border-color: #8b0000;
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
 }
 
 .login-button {
@@ -61,16 +61,16 @@
   border-radius: 12px;
   font-weight: 600;
   font-size: 16px;
-  background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%);
   border: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
 }
 
 .login-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.3);
-  background: linear-gradient(135deg, #40a9ff 0%, #9254de 100%);
+  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.3);
+  background: linear-gradient(135deg, #a52a2a 0%, #8b0000 100%);
 }
 
 .login-footer {
@@ -81,14 +81,14 @@
 }
 
 .login-footer a {
-  color: #1890ff;
+  color: #8b0000;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .login-footer a:hover {
-  color: #40a9ff;
+  color: #a52a2a;
   text-decoration: underline;
 }
 

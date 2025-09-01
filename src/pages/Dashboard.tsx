@@ -70,6 +70,7 @@ import dayjs from "dayjs";
 import EquiposTable from "../components/EquiposTable";
 import EquipoDetalle from "./EquipoDetalle";
 import UsuariosTable from "../components/UsuariosTable";
+import logo from "../assets/logo.svg";
 
 const EventSelector: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
@@ -1526,8 +1527,13 @@ const Dashboard: React.FC = () => {
       >
         <div className="sidebar-header">
           <div className="logo">
-            {!collapsed && <h2>Eventos</h2>}
-            {collapsed && <CalendarOutlined className="logo-icon" />}
+            {!collapsed && (
+              <div className="logo-container">
+                <img src={logo} alt="Logo Eventos" className="logo-image" />
+                <h2>Eventos</h2>
+              </div>
+            )}
+            {collapsed && <img src={logo} alt="Logo" className="logo-icon" />}
           </div>
         </div>
 
