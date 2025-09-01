@@ -33,6 +33,7 @@ import {
   Breadcrumb,
   Divider,
 } from "antd";
+import type { MenuProps } from "antd";
 import {
   UserOutlined,
   CalendarOutlined,
@@ -59,6 +60,8 @@ import {
   BarChartOutlined,
   HomeOutlined,
   RightOutlined,
+  MessageOutlined,
+  ShopOutlined,
 } from "@ant-design/icons";
 import "./Dashboard.css";
 import { eventosService } from "../services/eventos";
@@ -1337,54 +1340,91 @@ const Dashboard: React.FC = () => {
   ];
 
   // Menú del sidebar
-  const menuItems = [
+  const menuItems: MenuProps["items"] = [
     {
       key: "dashboard",
       icon: <DashboardOutlined />,
       label: "Dashboard",
     },
     {
-      key: "events",
-      icon: <CalendarOutlined />,
-      label: "Eventos",
+      type: "divider",
     },
     {
-      key: "equipos",
-      icon: <TeamOutlined />,
-      label: "Equipos",
+      type: "group",
+      label: "ADMINISTRACIÓN",
       children: [
         {
-          key: "equipos-list",
-          icon: <TeamOutlined />,
-          label: "Lista de Equipos",
+          key: "usuarios",
+          icon: <UserOutlined />,
+          label: "Usuarios",
         },
         {
-          key: "equipo-detalle",
-          icon: <EyeOutlined />,
-          label: "Detalle de Equipo",
-          disabled: !selectedEquipoId,
+          key: "buzon-asistencia",
+          icon: <MessageOutlined />,
+          label: "Buzón de Asistencia",
+        },
+      ],
+    },
+    {
+      type: "divider",
+    },
+    {
+      type: "group",
+      label: "LOGÍSTICA",
+      children: [
+        {
+          key: "events",
+          icon: <CalendarOutlined />,
+          label: "Eventos",
         },
         {
           key: "participants",
           icon: <UserOutlined />,
           label: "Participantes",
         },
+        {
+          key: "equipos",
+          icon: <TeamOutlined />,
+          label: "Equipos",
+          children: [
+            {
+              key: "equipos-list",
+              icon: <TeamOutlined />,
+              label: "Lista de Equipos",
+            },
+            {
+              key: "equipo-detalle",
+              icon: <EyeOutlined />,
+              label: "Detalle de Equipo",
+              disabled: !selectedEquipoId,
+            },
+          ],
+        },
       ],
     },
     {
-      key: "usuarios",
-      icon: <UserOutlined />,
-      label: "Usuarios",
+      type: "divider",
     },
     {
-      key: "revenue",
-      icon: <DollarOutlined />,
-      label: "Ingresos",
-    },
-    {
-      key: "settings",
-      icon: <SettingOutlined />,
-      label: "Configuración",
+      type: "group",
+      label: "SITIO PÚBLICO",
+      children: [
+        {
+          key: "restaurantes",
+          icon: <ShopOutlined />,
+          label: "Restaurantes",
+        },
+        {
+          key: "hospedajes",
+          icon: <HomeOutlined />,
+          label: "Hospedajes",
+        },
+        {
+          key: "lugares-interes",
+          icon: <EnvironmentOutlined />,
+          label: "Lugares de Interés",
+        },
+      ],
     },
   ];
 
@@ -1429,10 +1469,16 @@ const Dashboard: React.FC = () => {
         return `Detalle del Equipo: ${selectedEquipoName}`;
       case "participants":
         return "Gestión de Participantes";
-      case "revenue":
-        return "Reportes de Ingresos";
-      case "settings":
-        return "Configuración del Sistema";
+      case "usuarios":
+        return "Gestión de Usuarios";
+      case "buzon-asistencia":
+        return "Buzón de Asistencia";
+      case "restaurantes":
+        return "Gestión de Restaurantes";
+      case "hospedajes":
+        return "Gestión de Hospedajes";
+      case "lugares-interes":
+        return "Lugares de Interés";
       default:
         return "Dashboard";
     }
@@ -1451,10 +1497,16 @@ const Dashboard: React.FC = () => {
         return <EyeOutlined />;
       case "participants":
         return <UserOutlined />;
-      case "revenue":
-        return <DollarOutlined />;
-      case "settings":
-        return <SettingOutlined />;
+      case "usuarios":
+        return <UserOutlined />;
+      case "buzon-asistencia":
+        return <MessageOutlined />;
+      case "restaurantes":
+        return <ShopOutlined />;
+      case "hospedajes":
+        return <HomeOutlined />;
+      case "lugares-interes":
+        return <EnvironmentOutlined />;
       default:
         return <DashboardOutlined />;
     }
@@ -1908,18 +1960,34 @@ const Dashboard: React.FC = () => {
             </div>
           )}
 
-          {selectedKey === "revenue" && (
+          {selectedKey === "buzon-asistencia" && (
             <div className="dashboard-content-wrapper">
-              <Card title="Reportes de Ingresos" className="content-card">
-                <p>Aquí irán los reportes de ingresos</p>
+              <Card title="Buzón de Asistencia" className="content-card">
+                <p>Aquí irá el buzón de asistencia</p>
               </Card>
             </div>
           )}
 
-          {selectedKey === "settings" && (
+          {selectedKey === "restaurantes" && (
             <div className="dashboard-content-wrapper">
-              <Card title="Configuración" className="content-card">
-                <p>Aquí irá la configuración del sistema</p>
+              <Card title="Gestión de Restaurantes" className="content-card">
+                <p>Aquí irá la gestión de restaurantes</p>
+              </Card>
+            </div>
+          )}
+
+          {selectedKey === "hospedajes" && (
+            <div className="dashboard-content-wrapper">
+              <Card title="Gestión de Hospedajes" className="content-card">
+                <p>Aquí irá la gestión de hospedajes</p>
+              </Card>
+            </div>
+          )}
+
+          {selectedKey === "lugares-interes" && (
+            <div className="dashboard-content-wrapper">
+              <Card title="Lugares de Interés" className="content-card">
+                <p>Aquí irán los lugares de interés</p>
               </Card>
             </div>
           )}
