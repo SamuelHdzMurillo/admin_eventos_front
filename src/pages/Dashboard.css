@@ -41,7 +41,7 @@
 .logo-image {
   width: 32px;
   height: 32px;
-  filter: drop-shadow(0 2px 4px rgba(139, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 4px rgba(158, 54, 82, 0.3));
 }
 
 .logo h2 {
@@ -55,8 +55,8 @@
 
 .logo-icon {
   font-size: 28px;
-  color: #8b0000;
-  filter: drop-shadow(0 2px 4px rgba(139, 0, 0, 0.3));
+  color: #9e3652;
+  filter: drop-shadow(0 2px 4px rgba(158, 54, 82, 0.3));
 }
 
 .sidebar-menu {
@@ -76,15 +76,15 @@
 }
 
 .sidebar-menu .ant-menu-item-selected {
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%) !important;
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.3);
   transform: translateX(4px);
 }
 
 .sidebar-menu .ant-menu-item:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
   transform: translateX(2px);
 }
 
@@ -196,7 +196,7 @@
 .sidebar-trigger:hover,
 .mobile-menu-trigger:hover {
   background: #f5f5f5;
-  color: #8b0000;
+  color: #9e3652;
   transform: scale(1.05);
 }
 
@@ -245,7 +245,7 @@
 }
 
 .dashboard-breadcrumb .ant-breadcrumb-link:hover {
-  color: #8b0000;
+  color: #9e3652;
 }
 
 .dashboard-breadcrumb .ant-breadcrumb-link .ant-btn-link {
@@ -255,7 +255,7 @@
 }
 
 .dashboard-breadcrumb .ant-breadcrumb-link .ant-btn-link:hover {
-  color: #8b0000;
+  color: #9e3652;
   text-decoration: none;
 }
 
@@ -304,15 +304,15 @@
   height: 40px;
   border-radius: 8px;
   font-weight: 600;
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%);
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%);
   border: none;
-  box-shadow: 0 2px 8px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(158, 54, 82, 0.3);
   transition: all 0.3s ease;
 }
 
 .header-actions .ant-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.4);
 }
 
 /* Estadísticas */
@@ -568,14 +568,14 @@
 }
 
 .mobile-menu .ant-menu-item-selected {
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%) !important;
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.3);
 }
 
 .mobile-menu .ant-menu-item:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
 }
 
 /* Animaciones */
@@ -711,7 +711,7 @@
 .ant-table-tbody > tr:hover > td {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(139, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(158, 54, 82, 0.1);
 }
 
 .ant-table-tbody > tr:last-child > td {
@@ -826,7 +826,7 @@
 .ant-table-tbody .ant-btn-text:hover {
   background: linear-gradient(135deg, #ffe6e6 0%, #ffd6d6 100%);
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(139, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(158, 54, 82, 0.2);
 }
 
 /* Estilos para tags en tablas */
@@ -843,13 +843,13 @@
 
 /* Estilos para enlaces en tablas */
 .ant-table-tbody a {
-  color: #8b0000;
+  color: #9e3652;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .ant-table-tbody a:hover {
-  color: #a52a2a;
+  color: #b84a6a;
   text-decoration: underline;
 }
 
@@ -1018,7 +1018,7 @@
 
 /* Colores específicos para diferentes tipos de estadísticas */
 .stat-card[data-stat="participantes"] .ant-statistic-content-prefix .anticon {
-  color: #8b0000;
+  color: #9e3652;
 }
 
 .stat-card[data-stat="equipos"] .ant-statistic-content-prefix .anticon {
@@ -1160,7 +1160,7 @@
 
 .participant-item:hover {
   background: #fff0f0;
-  border-color: #8b0000;
+  border-color: #9e3652;
   transform: translateX(2px);
 }
 
@@ -1177,7 +1177,7 @@
   margin-bottom: 8px !important;
   color: #262626;
   font-weight: 600;
-  border-left: 3px solid #8b0000;
+  border-left: 3px solid #9e3652;
   padding-left: 8px;
   background: #fafafa;
   padding: 6px 10px;
@@ -1391,13 +1391,13 @@
 
 .sidebar-menu .ant-menu-submenu-title:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
 }
 
 .sidebar-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%) !important;
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.3);
 }
 
 .sidebar-menu .ant-menu-sub {
@@ -1418,15 +1418,15 @@
 }
 
 .sidebar-menu .ant-menu-sub .ant-menu-item-selected {
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%) !important;
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.3);
   transform: translateX(4px);
 }
 
 .sidebar-menu .ant-menu-sub .ant-menu-item:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
   transform: translateX(2px);
 }
 
@@ -1508,7 +1508,7 @@
 }
 
 .sidebar-menu .ant-menu-submenu-title:hover .ant-menu-submenu-arrow {
-  color: #8b0000;
+  color: #9e3652;
 }
 
 .sidebar-menu
@@ -1531,7 +1531,7 @@
 
 .mobile-menu .ant-menu-submenu-title:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
 }
 
 .mobile-menu .ant-menu-sub {
@@ -1552,14 +1552,14 @@
 }
 
 .mobile-menu .ant-menu-sub .ant-menu-item-selected {
-  background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%) !important;
+  background: linear-gradient(135deg, #9e3652 0%, #b84a6a 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(158, 54, 82, 0.3);
 }
 
 .mobile-menu .ant-menu-sub .ant-menu-item:hover {
   background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%) !important;
-  color: #8b0000 !important;
+  color: #9e3652 !important;
 }
 
 /* Animaciones CSS */

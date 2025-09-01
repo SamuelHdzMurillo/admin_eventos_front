@@ -70,7 +70,7 @@ import dayjs from "dayjs";
 import EquiposTable from "../components/EquiposTable";
 import EquipoDetalle from "./EquipoDetalle";
 import UsuariosTable from "../components/UsuariosTable";
-import logo from "../assets/logo.svg";
+import logo from "../assets/logo_cecyte_chef_sin_fondo.png";
 
 const EventSelector: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
@@ -1527,13 +1527,25 @@ const Dashboard: React.FC = () => {
       >
         <div className="sidebar-header">
           <div className="logo">
-            {!collapsed && (
-              <div className="logo-container">
-                <img src={logo} alt="Logo Eventos" className="logo-image" />
-                <h2>Eventos</h2>
-              </div>
-            )}
-            {collapsed && <img src={logo} alt="Logo" className="logo-icon" />}
+            <div
+              className="logo-container"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={logo}
+                alt="Logo"
+                style={{
+                  width: collapsed ? 48 : 120,
+                  height: collapsed ? 48 : 120,
+                  transition: "all 0.3s",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
           </div>
         </div>
 
