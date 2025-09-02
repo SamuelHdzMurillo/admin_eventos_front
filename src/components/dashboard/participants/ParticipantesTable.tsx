@@ -219,6 +219,7 @@ const ParticipantesTable: React.FC = () => {
   return (
     <Card title="Gestión de Participantes" className="content-card">
       <Table
+        className="participantes-table"
         dataSource={participantes}
         columns={columns}
         rowKey="id"
@@ -231,7 +232,7 @@ const ParticipantesTable: React.FC = () => {
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} de ${total} participantes`,
         }}
-        scroll={{ x: "100%" }}
+        scroll={{ x: 1200 }}
       />
 
       {/* Modal de detalle del participante */}
