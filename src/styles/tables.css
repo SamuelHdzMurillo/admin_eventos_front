@@ -1,3 +1,146 @@
+.usuarios-table-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios-stats-row {
+  margin-bottom: 24px;
+}
+
+.usuarios-stats-card {
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.usuarios-stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.usuarios-table-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.usuario-avatar {
+  transition: transform 0.2s ease;
+}
+
+.usuario-avatar:hover {
+  transform: scale(1.1);
+}
+
+.usuario-role-tag {
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.usuario-actions-space {
+  display: flex;
+  gap: 4px;
+}
+
+.usuario-action-button {
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.usuario-action-button:hover {
+  transform: scale(1.1);
+}
+
+.usuario-detail-modal .ant-modal-content {
+  border-radius: 8px;
+}
+
+.usuario-detail-avatar {
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.usuario-form-modal .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.usuario-form-modal .ant-input,
+.usuario-form-modal .ant-select {
+  border-radius: 6px;
+}
+
+.usuario-form-modal .ant-btn {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.usuario-table-pagination {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.usuario-loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.usuario-empty-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.usuario-error-message {
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+}
+
+.usuario-success-message {
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .usuarios-stats-row .ant-col {
+    margin-bottom: 16px;
+  }
+
+  .usuario-actions-space {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .usuario-action-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .usuarios-table-container {
+    margin: 0 -16px;
+    border-radius: 0;
+  }
+
+  .usuarios-table-card {
+    border-radius: 0;
+  }
+}
+
+/* Estilos de Tablas */
+
+/* ===== USUARIOS TABLE ===== */
+/* Aquí van los estilos de UsuariosTable.css */
+
+/* ===== EQUIPOS TABLE ===== */
 .equipos-table-container {
   padding: 24px;
 }
