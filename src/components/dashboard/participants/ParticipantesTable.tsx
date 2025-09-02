@@ -231,7 +231,7 @@ const ParticipantesTable: React.FC = () => {
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} de ${total} participantes`,
         }}
-        scroll={{ x: 1500 }}
+        scroll={{ x: "100%" }}
       />
 
       {/* Modal de detalle del participante */}

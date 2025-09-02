@@ -235,7 +235,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ onEquipoSelect }) => {
                 pagination={false}
                 size="small"
                 className="equipos-table"
-                scroll={{ x: 600 }}
+                scroll={{ x: "100%" }}
                 onRow={(record) => ({
                   onClick: () => onEquipoSelect(record.id),
                   style: { cursor: "pointer" },
@@ -245,7 +245,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ onEquipoSelect }) => {
                   title="Equipo"
                   dataIndex="nombre_equipo"
                   key="nombre_equipo"
-                  width={200}
                   render={(text: string) => (
                     <Space size="small">
                       <Avatar size="small" icon={<TeamOutlined />} />
@@ -259,7 +258,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ onEquipoSelect }) => {
                   title="Entidad"
                   dataIndex="entidad_federativa"
                   key="entidad_federativa"
-                  width={120}
                   render={(text: string) => (
                     <Text style={{ fontSize: "11px" }}>{text}</Text>
                   )}
@@ -268,7 +266,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ onEquipoSelect }) => {
                   title="Anfitrión"
                   dataIndex="nombre_anfitrion"
                   key="nombre_anfitrion"
-                  width={150}
                   render={(text: string) => (
                     <Text style={{ fontSize: "11px" }}>{text}</Text>
                   )}
@@ -277,7 +274,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ onEquipoSelect }) => {
                   title="Estatus"
                   dataIndex="estatus_del_equipo"
                   key="estatus_del_equipo"
-                  width={80}
                   render={(status: string) => (
                     <Tag color={status === "activo" ? "success" : "default"}>
                       {status}
